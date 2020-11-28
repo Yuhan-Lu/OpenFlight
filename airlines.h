@@ -1,43 +1,61 @@
 #pragma once
-#include <iostream>
-#include <sstream>
 #include <vector>
-#include <map>
+#include <string>
+#include <unordered_map>
+#include <iterator>
 
-using namespace std;
+using std::vector;
+using std::string;
+using std::unordered_map;
+
 // for airlines.dat
-class airlines {
+class Airlines {
     public:
+        /**
+         * Interal storage element for all entries in airlines.dat
+         */
+        class AirlineNode {
+            public:
+                /** 
+                 * Constructs one storage element
+                 * @param name name of the airline
+                 * @param alias alias of the airline
+                 * @param IATA IATA code of the airline
+                 * @param ICAO ICAO code of the airline
+                 * @param callsign callsign of the airline
+                 * @param country country where the airline belongs
+                 * @param active whether the airline is active
+                 */
+                AirlineNode(string name, string alias, string IATA, string ICAO, 
+                        string callsign, string country, bool active) : 
+                    name(name), alias(alias), IATA(IATA), ICAO(ICAO), callsign(callsign),
+                    country(country), active(active) {};
 
-        airlines(int airlineID, string name, string alias, string IATA, 
-        string ICAO, string callsign, string country, string active);
-        // load DAT as a map
-        void loadData(string fileName);
+                /* All the data should be constant */
+                const string name;
+                const string alias;
+                const string IATA;
+                const string ICAO;
+                const string callsign;
+                const string country;
+                const bool active;
+        };
 
-         
+        /**
+         * Initialzation of all the airlines
+         * @param filename the name of the file to read
+         */
+        void init();
+
+        /** 
+         * Get the internal storage element by the airline id specified
+         * @param id the ID of the airline
+         */
+        AirlineNode* getAirlineByID(int id);
+
     private:
-        int airlineID;
-        string name;
-        string alias;
-        string IATA;
-        string ICAO;
-        string callsign;
-        string country;
-        string active;
-
-        //map<int, airlines> airlinesDAT; 
-
-        // void _split(const string &s, char delim, vector<string> &elems) {
-        //     stringstream ss(s);
-        //     string item;
-
-        //     while (getline(ss, item, delim)) {
-        //         elems.push_back(item);
-        //     }
-        // }
-       
-        vector<string> split(string &s, char delim);
-        void _split(string &s, char delim, vector<string> &elems);
-
+        /* Internal storage that holds all the airline infomation */
+        unordered_map<int, AirlineNode*> _map;
 };
+
 

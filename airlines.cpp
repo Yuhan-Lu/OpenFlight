@@ -1,62 +1,41 @@
 #include "airlines.h"
 #include <fstream>  
-#include <iostream>
-#include <map>
+#include <unordered_map>
+#include "utils.h"
 
-using namespace std;
-// constructor of airlines
-airlines::airlines(int airlineID, string name, string alias, string IATA, 
-        string ICAO, string callsign, string country, string active) {
-            
-    this->airlineID = airlineID;  
-    this->name = name;  
-    this->alias = alias;  
-    this->IATA = IATA;  
-    this->ICAO = ICAO;  
-    this->callsign = callsign;  
-    this->country = country;  
-    this->active = active;        
-    
-}
+using std::cout;
+using std::endl;
+using std::ifstream;
+using std::unordered_map;
+using utils::split;
+using utils::strip;
 
-map<int, airlines> loadData(string  fileName) {
-    map<int, airlines> airlinesDAT; 
-    ifstream infile(fileName);  
-    
+void Airlines::init() {
+    _map.clear();
+    ifstream infile("data/airlines.dat");  
     string line;
     // handle error
-    if (!infile.is_open()) {  
+    if (!infile.is_open()) {
         cout << "can not open the file \n"<<endl;
-        return;
+        exit(1);
     }
     // loop through dat by lines
     while(getline(infile,line)) {  
-        //cout << line << "\n";
-        
-        //compiler error stupid bug exist
-        vector<string> lineVec = split(line, ",");
-        
-        cout << "test" << lineVec[0] >> endl;
-        
-        
-        airlines eachRow = new airlines(to_integer(lineVec[0]), lineVec[1], lineVec[2], lineVec[3], lineVec[4], 
-        lineVec[5], lineVec[6], lineVec[7]);
-        airlinesDAT[to_integer(lineVec[0])] = eachRow;
+        vector<string> in = split(line, ','); 
+        int id = std::stoi(in[0]);
+        string name = strip(in[1]);
+        string alias = strip(in[2]);
+        string IATA = strip(in[3]);
+        string ICAO = strip(in[4]);
+        string callsign = strip(in[5]);
+        string country = strip(in[6]);
+        bool active = in[7] == "\"Y\"";
+        AirlineNode* data = new AirlineNode(name, alias, IATA, ICAO, callsign, country, active);
+        _map[id] = data;
     }
     infile.close();
-    return airlinesDAT;
 }
 
-void airlines::_split(string &s, char delim, vector<string> &elems) {
-    stringstream ss(s);
-    string item;
-
-    while (getline(ss, item, delim)) {
-        elems.push_back(item);
-    }
-}
-vector<string> airlines::split(string &s, char delim) {
-    vector<string> elems;
-    _split(s, delim, elems);
-    return elems;
+Airlines::AirlineNode* Airlines::getAirlineByID(int id) {
+    return _map[id];
 }

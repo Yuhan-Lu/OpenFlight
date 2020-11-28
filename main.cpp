@@ -8,8 +8,8 @@ using namespace std;
 
 int main() {
     
-    map<int, airlines> airlinesDAT; 
-    airlinesDAT = loadData("airlines.dat");
+    Airlines airlinesDAT;
+    airlinesDAT.init();
 
     return 0;
 }
