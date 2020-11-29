@@ -11,7 +11,7 @@ using std::unordered_map;
 using utils::split;
 using utils::strip;
 
-void planes::init() {
+void Planes::init() {
     _map.clear();
     ifstream infile("data/planes.dat");  
     string line;
@@ -26,12 +26,12 @@ void planes::init() {
         string name = strip(in[0]);
         string IATA = strip(in[1]);
         string ICAO = strip(in[2]);
-        planesNode* data = new planesNode(name, ICAO);
+        PlanesNode* data = new PlanesNode(name, ICAO);
         _map[IATA] = data;
     }
     infile.close();
 }
 
-planes::planesNode* planes::getPlaneByIATA(string IATA) {
+Planes::PlanesNode* Planes::getPlaneByIATA(string IATA) {
     return _map[IATA];
 }
