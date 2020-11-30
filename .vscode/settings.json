@@ -68,6 +68,16 @@
         "memory": "cpp",
         "queue": "cpp",
         "random": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "filesystem": "cpp",
+        "__errc": "cpp",
+        "__node_handle": "cpp",
+        "__string": "cpp",
+        "__threading_support": "cpp",
+        "bit": "cpp",
+        "optional": "cpp",
+        "regex": "cpp",
+        "stack": "cpp",
+        "string_view": "cpp"
     }
 }
