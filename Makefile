@@ -7,6 +7,9 @@ utils.o : utils.h utils.cpp
 airlines.o : airlines.h airlines.cpp 
 	clang++ -c airlines.cpp
 
+airports.o : airports.h airports.cpp 
+	clang++ -c airports.cpp
+
 main.o : main.cpp
 	clang++ -c main.cpp
 
