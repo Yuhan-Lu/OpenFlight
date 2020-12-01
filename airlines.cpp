@@ -7,8 +7,7 @@ using std::cout;
 using std::endl;
 using std::ifstream;
 using std::unordered_map;
-using utils::split;
-using utils::strip;
+using utils::readEntry;
 
 void Airlines::init() {
     _map.clear();
@@ -21,15 +20,15 @@ void Airlines::init() {
     }
     // loop through dat by lines
     while(getline(infile,line)) {  
-        vector<string> in = split(line, ','); 
+        vector<string> in = readEntry(line); 
         int id = std::stoi(in[0]);
-        string name = strip(in[1]);
-        string alias = strip(in[2]);
-        string IATA = strip(in[3]);
-        string ICAO = strip(in[4]);
-        string callsign = strip(in[5]);
-        string country = strip(in[6]);
-        bool active = in[7] == "\"Y\"";
+        string name = in[1];
+        string alias = in[2];
+        string IATA = in[3];
+        string ICAO = in[4];
+        string callsign = in[5];
+        string country = in[6];
+        bool active = in[7] == "Y";
         AirlineNode* data = new AirlineNode(name, alias, IATA, ICAO, callsign, country, active);
         _map[id] = data;
     }

@@ -1,25 +1,35 @@
 #include "utils.h"
-#include <sstream>
+#include <algorithm>
+#include <iostream>
 
+using std::cout;
 using std::stringstream;
+using std::remove;
 
 namespace utils {
-    vector<string> split(string &s, char delim) {
-        vector<string> elems;
-        _split(s, delim, elems);
-        return elems;
-    }
-
-    void _split(string &s, char delim, vector<string> &elems) {
-        stringstream ss(s);
+    vector<string> readEntry(string &s) {
         string item;
-        while (getline(ss, item, delim)) {
-            elems.push_back(item);
+        vector<string> elems;
+        string::iterator it = s.begin();
+        while (it != s.end()) {
+            if (*it == '\"') {
+                while (++it != s.end()) {
+                    if (*it == '\"') break;
+                    item.push_back(*it);
+                }
+            } else {
+                while (it != s.end()) {
+                    if (*it == ',') break;
+                    item.push_back(*it++);
+                }
+                if (item == "\\N") elems.push_back("");
+                else elems.push_back(item);
+                item.clear();
+            }
+            ++it;
         }
-    }
-
-    string strip(string& s) {
-        return s.substr(1, s.size() - 2);
+        elems.push_back(item);
+        return elems;
     }
 
     double getDistance(double latitude1, double longtitude1, double latitude2, double longtitude2) {
