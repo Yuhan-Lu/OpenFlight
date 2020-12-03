@@ -8,8 +8,7 @@ using std::cout;
 using std::endl;
 using std::ifstream;
 using std::unordered_map;
-using utils::split;
-using utils::strip;
+using utils::readEntry;
 
 void Airports::init() {
     _map.clear();
@@ -22,20 +21,20 @@ void Airports::init() {
     }
     // loop through dat by lines
     while(getline(infile,line)) {  
-        vector<string> in = split(line, ','); 
+        vector<string> in = readEntry(line); 
         int id = std::stoi(in[0]);
         //cout << id << endl;
-        string name = strip(in[1]);
-        string city = strip(in[2]);
-        string country = strip(in[3]);
-        string IATA = strip(in[4]);
-        string ICAO = strip(in[5]);
+        string name = in[1];
+        string city = in[2];
+        string country = in[3];
+        string IATA = in[4];
+        string ICAO = in[5];
         double latit = std::stod(in[6]);
         double longit = std::stod(in[7]);
         int alt = std::stoi(in[8]);
-        string timeZone = strip(in[9]);
-        string DST = strip(in[10]);
-        string tz = strip(in[11]);
+        string timeZone = in[9];
+        string DST = in[10];
+        string tz = in[11];
         AirportNode* data = new AirportNode(name, city, country, IATA, ICAO, latit, longit,
             alt, timeZone, DST, tz);
         _map[id] = data;
