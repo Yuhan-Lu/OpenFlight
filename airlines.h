@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <iterator>
 
 using std::vector;
 using std::string;
@@ -28,8 +27,8 @@ class Airlines {
                  */
                 AirlineNode(string name, string alias, string IATA, string ICAO, 
                         string callsign, string country, bool active) : 
-                    name(name), alias(alias), IATA(IATA), ICAO(ICAO), callsign(callsign),
-                    country(country), active(active) {};
+                    name(name), alias(alias), IATA(IATA), ICAO(ICAO), callsign(callsign), country(country), 
+                    active(active) {};
 
                 /* All the data should be constant */
                 const string name;
@@ -43,15 +42,31 @@ class Airlines {
 
         /**
          * Initialzation of all the airlines
-         * @param filename the name of the file to read
+         * @param test whether read the actural files or the test files
          */
-        Airlines();
+        Airlines(bool test);
 
         /** 
          * Get the internal storage element by the airline id specified
          * @param id the ID of the airline
          */
         AirlineNode* getAirlineByID(int id);
+        
+        /**
+         * Begin iterator of all the airlines, used when traversing through the dataset to construct a graph
+         * @returns const begin iterator
+         */
+        unordered_map<int, Airlines::AirlineNode*>::const_iterator begin() const { 
+            return _map.begin(); 
+        };
+
+        /**
+         * End iterator of all the airlines, used when traversing through the dataset to construct a graph
+         * @returns const end iterator
+         */
+        unordered_map<int, Airlines::AirlineNode*>::const_iterator end() const { 
+            return _map.end(); 
+        };
 
     private:
         /* Internal storage that holds all the airline infomation */

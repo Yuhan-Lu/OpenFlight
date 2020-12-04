@@ -7,6 +7,8 @@ DEPFILE_FLAGS = -MMD -MP
 OBJS_DIR = .objs
 EXE = main
 
+OBJS += airlines.o airports.o planes.o routes.o airlineFlow.o utils.o main.o cs225/graph.o
+
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 	@mkdir -p $(OBJS_DIR)/cs225
@@ -14,17 +16,13 @@ $(OBJS_DIR):
 $(OBJS_DIR)/%.o: %.cpp | $(OBJS_DIR)
 	$(CXX) $(CXXFLAGS) $< -o $@
 
-OBJS = airlines.o airports.o planes.o routes.o airlineFlow.o main.o utils.o
-
-OBJS += cs225/graph.o
-
 $(EXE): $(patsubst %.o, $(OBJS_DIR)/%.o, $(OBJS))
-	$(LD) $(filter-out $<, $^) $(LDFLAGS) -o $@
+	$(LD) $^ $(LDFLAGS) -o $@
 
 clean : 
-	rm -rf $(EXE) $(OBJS_DIR) *.o
+	rm -rf $(EXE) $(OBJS_DIR)
 	
 clear :
-	rm -rf $(EXE) $(OBJS_DIR) *.o
+	rm -rf $(EXE) $(OBJS_DIR)
 
 .PHONY : clean clear

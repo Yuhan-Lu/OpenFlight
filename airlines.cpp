@@ -10,9 +10,10 @@ using std::ifstream;
 using std::unordered_map;
 using utils::readEntry;
 
-Airlines::Airlines() {
+Airlines::Airlines(bool test) {
     _map.clear();
-    ifstream infile("data/airlines.dat");  
+    string filein = test ? "testData/airlines.dat" : "data/airlines.dat";
+    ifstream infile(filein);
     string line;
     // handle error
     if (!infile.is_open()) {

@@ -10,25 +10,26 @@ namespace utils {
     vector<string> readEntry(string &s) {
         string item;
         vector<string> elems;
-        string::iterator it = s.begin();
-        while (it != s.end()) {
-            if (*it == '\"') {
-                while (++it != s.end()) {
-                    if (*it == '\"') break;
-                    item.push_back(*it);
+        size_t idx = 0;
+        while (idx < s.size()) {
+            if (s[idx] == '\"') {
+                idx++;
+                while (s[idx] != '\"') {
+                    item.push_back(s[idx++]);
                 }
             } else {
-                while (it != s.end()) {
-                    if (*it == ',') break;
-                    item.push_back(*it++);
+                while (idx < s.size()) {
+                    if (s[idx] == ',') break;
+                    item.push_back(s[idx++]);
                 }
                 if (item == "\\N") elems.push_back("");
                 else elems.push_back(item);
                 item.clear();
             }
-            ++it;
+            idx++;
         }
-        elems.push_back(item);
+        if (item == "\\N") elems.push_back("");
+        else elems.push_back(item);
         return elems;
     }
 
