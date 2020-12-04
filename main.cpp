@@ -1,16 +1,17 @@
 #include <iostream>
 #include <map>
 #include "airlines.h"
-#include "airlines.cpp"
 #include "airports.h"
-#include "airports.cpp"
+#include "routes.h"
+#include "planes.h"
+
+using std::cout;
+using std::endl;
 
 int main() {
 
     Airlines airlinesDAT;
-    airlinesDAT.init();
     Airports airportDAT;
-    airportDAT.init();
     //cout << airlinesDAT.getAirlineByID(1)->alias <<endl;
     cout << airportDAT.getAirportByID(507)->latit << endl;
 

@@ -1,16 +1,18 @@
 #include "airports.h"
 #include <fstream>  
 #include <unordered_map>
-#include "utils.h"
 #include <iostream>
+#include "utils.h"
 
 using std::cout;
 using std::endl;
 using std::ifstream;
 using std::unordered_map;
+using std::stod;
+using std::stoi;
 using utils::readEntry;
 
-void Airports::init() {
+Airports::Airports() {
     _map.clear();
     ifstream infile("data/airports.dat");  
     string line;
@@ -22,16 +24,15 @@ void Airports::init() {
     // loop through dat by lines
     while(getline(infile,line)) {  
         vector<string> in = readEntry(line); 
-        int id = std::stoi(in[0]);
-        //cout << id << endl;
+        int id = stoi(in[0]);
         string name = in[1];
         string city = in[2];
         string country = in[3];
         string IATA = in[4];
         string ICAO = in[5];
-        double latit = std::stod(in[6]);
-        double longit = std::stod(in[7]);
-        int alt = std::stoi(in[8]);
+        double latit = stod(in[6]);
+        double longit = stod(in[7]);
+        int alt = stoi(in[8]);
         string timeZone = in[9];
         string DST = in[10];
         string tz = in[11];

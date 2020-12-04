@@ -36,7 +36,7 @@ class Planes {
          * Initialzation of all planes data
          * @param filename the name of the file to read
          */
-        void init();
+        Planes();
 
         /** 
          * Get the internal storage element by the plane id specified

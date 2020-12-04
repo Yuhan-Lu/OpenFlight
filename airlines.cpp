@@ -1,5 +1,6 @@
 #include "airlines.h"
 #include <fstream>  
+#include <iostream>
 #include <unordered_map>
 #include "utils.h"
 
@@ -9,7 +10,7 @@ using std::ifstream;
 using std::unordered_map;
 using utils::readEntry;
 
-void Airlines::init() {
+Airlines::Airlines() {
     _map.clear();
     ifstream infile("data/airlines.dat");  
     string line;

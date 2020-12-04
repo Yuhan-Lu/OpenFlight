@@ -49,7 +49,7 @@ class Routes {
          * Initialzation of all the airlines
          * @param filename the name of the file to read
          */
-        void init();
+        Routes();
 
         /** 
          * Get the internal storage element by the airline id specified
