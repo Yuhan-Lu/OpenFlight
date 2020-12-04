@@ -10,13 +10,14 @@ using std::ifstream;
 using std::unordered_map;
 using utils::readEntry;
 
-Airlines::Airlines() {
+Airlines::Airlines(bool test) {
     _map.clear();
-    ifstream infile("data/airlines.dat");  
+    string filein = test ? "testData/airlines.dat" : "data/airlines.dat";
+    ifstream infile(filein);
     string line;
     // handle error
     if (!infile.is_open()) {
-        cout << "can not open the file \n"<<endl;
+        cout << "can not open the file" << endl;
         exit(1);
     }
     // loop through dat by lines
@@ -37,5 +38,6 @@ Airlines::Airlines() {
 }
 
 Airlines::AirlineNode* Airlines::getAirlineByID(int id) {
-    return _map[id];
+    if (_map.find(id) != _map.end()) return _map[id];
+    return nullptr;
 }

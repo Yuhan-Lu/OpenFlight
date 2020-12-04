@@ -12,17 +12,18 @@ using std::stod;
 using std::stoi;
 using utils::readEntry;
 
-Airports::Airports() {
+Airports::Airports(bool test) {
     _map.clear();
-    ifstream infile("data/airlines.dat");  
+    string filein = test ? "testData/airports.dat" : "data/airports-extended.dat";
+    ifstream infile(filein); 
     string line;
     // handle error
     if (!infile.is_open()) {
-        cout << "can not open the file \n"<<endl;
+        cout << "can not open the file" << endl;
         exit(1);
     }
     // loop through dat by lines
-    while(getline(infile,line)) {  
+    while(getline(infile,line)) { 
         vector<string> in = readEntry(line); 
         int id = stoi(in[0]);
         string name = in[1];
@@ -39,10 +40,17 @@ Airports::Airports() {
         AirportNode* data = new AirportNode(name, city, country, IATA, ICAO, latit, longit,
             alt, timeZone, DST, tz);
         _map[id] = data;
+        _IATAToID[IATA] = id;
     }
     infile.close();
 }
 
-Airlines::AirlineNode* Airlines::getAirlineByID(int id) {
-    return _map[id];
+Airports::AirportNode* Airports::getAirportByID(int id) {
+    if (_map.find(id) != _map.end()) return _map[id];
+    return nullptr;
+}
+
+int Airports::getAirportIDByIATA(string IATA) {
+    if (_IATAToID.find(IATA) != _IATAToID.end()) return _IATAToID[IATA];
+    return -1;
 }

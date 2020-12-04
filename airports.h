@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <iterator>
 
 using std::vector;
 using std::string;
@@ -53,9 +52,9 @@ class Airports {
 
         /**
          * Initialzation of all the airports
-         * @param filename the name of the file to read
+         * @param test whether read the actural files or the test files
          */
-        Airports();
+        Airports(bool test);
 
         /** 
          * Get the internal storage element by the airport id specified
@@ -63,9 +62,32 @@ class Airports {
          */
         AirportNode* getAirportByID(int id);
 
+        /** 
+         * Get the id corresponding to IATA code
+         * @param IATA the IATA of the airport
+         */
+        int getAirportIDByIATA(string IATA);
+        
+        /**
+         * Begin iterator of all the airports, used when traversing through the dataset to construct a graph
+         * @returns const begin iterator
+         */
+        unordered_map<int, Airports::AirportNode*>::const_iterator begin() const { 
+            return _map.begin(); 
+        };
+
+        /**
+         * End iterator of all the airports, used when traversing through the dataset to construct a graph
+         * @returns const end iterator
+         */
+        unordered_map<int, Airports::AirportNode*>::const_iterator end() const { 
+            return _map.end(); 
+        };
+
     private:
-        /* Internal storage that holds all the airline infomation */
+        /* Internal storage that holds all the airport infomation */
         unordered_map<int, AirportNode*> _map;
+        unordered_map<string, int> _IATAToID;
 };
 
 

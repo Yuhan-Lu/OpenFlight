@@ -1,26 +1,13 @@
-main: main.o utils.o airlines.o airports.o planes.o routes.o
-	clang++ main.o utils.o airlines.o airports.o planes.o routes.o -o main
+# Executable names:
+EXE = main
+TEST = test
 
-utils.o : utils.h utils.cpp
-	clang++ -c utils.cpp
+# Add all object files needed for compiling:
+EXE_OBJ = main.o
+OBJS = airlines.o airports.o planes.o routes.o airlineFlow.o utils.o main.o cs225/graph.o
 
-airlines.o : airlines.h airlines.cpp 
-	clang++ -c airlines.cpp
+# Generated files
+# CLEAN_RM = images/Out.png
 
-airports.o : airports.h airports.cpp 
-	clang++ -c airports.cpp
-
-planes.o : planes.h planes.cpp 
-	clang++ -c planes.cpp
-	
-routes.o : routes.h routes.cpp 
-	clang++ -c routes.cpp
-
-main.o : main.cpp
-	clang++ -c main.cpp
-
-clean : 
-	rm main *.o
-	
-clear :
-	rm main *.o
+# Use the cs225 makefile template:
+include cs225/make/cs225.mk
