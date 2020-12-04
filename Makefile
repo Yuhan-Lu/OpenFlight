@@ -1,26 +1,30 @@
-main: main.o utils.o airlines.o airports.o planes.o routes.o
-	clang++ main.o utils.o airlines.o airports.o planes.o routes.o -o main
+CXX = clang++
+LD = clang++
+WARNINGS = -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
+CXXFLAGS = -std=c++1y -stdlib=libc++ -O0 $(WARNINGS) $(DEPFILE_FLAGS) -g -c
+LDFLAGS = -std=c++1y -stdlib=libc++ -lc++abi
+DEPFILE_FLAGS = -MMD -MP
+OBJS_DIR = .objs
+EXE = main
 
-utils.o : utils.h utils.cpp
-	clang++ -c utils.cpp
-
-airlines.o : airlines.h airlines.cpp 
-	clang++ -c airlines.cpp
-
-airports.o : airports.h airports.cpp 
-	clang++ -c airports.cpp
-
-planes.o : planes.h planes.cpp 
-	clang++ -c planes.cpp
+$(OBJS_DIR):
+	@mkdir -p $(OBJS_DIR)
+	@mkdir -p $(OBJS_DIR)/cs225
 	
-routes.o : routes.h routes.cpp 
-	clang++ -c routes.cpp
+$(OBJS_DIR)/%.o: %.cpp | $(OBJS_DIR)
+	$(CXX) $(CXXFLAGS) $< -o $@
 
-main.o : main.cpp
-	clang++ -c main.cpp
+OBJS = airlines.o airports.o planes.o routes.o airlineFlow.o main.o utils.o
+
+OBJS += cs225/graph.o
+
+$(EXE): $(patsubst %.o, $(OBJS_DIR)/%.o, $(OBJS))
+	$(LD) $(filter-out $<, $^) $(LDFLAGS) -o $@
 
 clean : 
-	rm main *.o
+	rm -rf $(EXE) $(OBJS_DIR) *.o
 	
 clear :
-	rm main *.o
+	rm -rf $(EXE) $(OBJS_DIR) *.o
+
+.PHONY : clean clear
