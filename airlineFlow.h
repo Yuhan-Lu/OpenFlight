@@ -29,6 +29,13 @@ class AirlineFlow {
          */
         vector<int> getAirlineBetweenAirports(int sourceAirportID, int destAirportID);
 
+        /**
+         * Find all the routes ID that flies from source to desination
+         * @param sourceIATA the IATA of the source airport
+         * @param destIATA the IATA of the destination airport
+         */
+        vector<int> getAirlineBetweenAirports(string sourceIATA, string destIATA);
+
     private:
         /** All the airlines */
         Airlines* _airlines;

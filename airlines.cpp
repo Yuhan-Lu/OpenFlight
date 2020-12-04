@@ -17,7 +17,7 @@ Airlines::Airlines(bool test) {
     string line;
     // handle error
     if (!infile.is_open()) {
-        cout << "can not open the file \n"<<endl;
+        cout << "can not open the file" << endl;
         exit(1);
     }
     // loop through dat by lines
@@ -38,5 +38,6 @@ Airlines::Airlines(bool test) {
 }
 
 Airlines::AirlineNode* Airlines::getAirlineByID(int id) {
-    return _map[id];
+    if (_map.find(id) != _map.end()) return _map[id];
+    return nullptr;
 }

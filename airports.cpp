@@ -14,16 +14,16 @@ using utils::readEntry;
 
 Airports::Airports(bool test) {
     _map.clear();
-    string filein = test ? "testData/airports.dat" : "data/airports.dat";
+    string filein = test ? "testData/airports.dat" : "data/airports-extended.dat";
     ifstream infile(filein); 
     string line;
     // handle error
     if (!infile.is_open()) {
-        cout << "can not open the file \n"<<endl;
+        cout << "can not open the file" << endl;
         exit(1);
     }
     // loop through dat by lines
-    while(getline(infile,line)) {  
+    while(getline(infile,line)) { 
         vector<string> in = readEntry(line); 
         int id = stoi(in[0]);
         string name = in[1];
@@ -46,9 +46,11 @@ Airports::Airports(bool test) {
 }
 
 Airports::AirportNode* Airports::getAirportByID(int id) {
-    return _map[id];
+    if (_map.find(id) != _map.end()) return _map[id];
+    return nullptr;
 }
 
 int Airports::getAirportIDByIATA(string IATA) {
-    return _IATAToID[IATA];
+    if (_IATAToID.find(IATA) != _IATAToID.end()) return _IATAToID[IATA];
+    return -1;
 }

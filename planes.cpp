@@ -17,7 +17,7 @@ Planes::Planes(bool test) {
     string line;
     // handle error
     if (!infile.is_open()) {
-        cout << "can not open the file \n"<<endl;
+        cout << "can not open the file" << endl;
         exit(1);
     }
     // loop through dat by lines
