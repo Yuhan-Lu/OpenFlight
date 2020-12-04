@@ -1,15 +1,18 @@
 #include "airlines.h"
 #include <fstream>  
 #include <unordered_map>
+#include <iostream>
 #include "utils.h"
 
 using std::cout;
 using std::endl;
 using std::ifstream;
 using std::unordered_map;
+using std::stod;
+using std::stoi;
 using utils::readEntry;
 
-void Airlines::init() {
+Airports::Airports() {
     _map.clear();
     ifstream infile("data/airlines.dat");  
     string line;
@@ -21,15 +24,20 @@ void Airlines::init() {
     // loop through dat by lines
     while(getline(infile,line)) {  
         vector<string> in = readEntry(line); 
-        int id = std::stoi(in[0]);
+        int id = stoi(in[0]);
         string name = in[1];
-        string alias = in[2];
-        string IATA = in[3];
-        string ICAO = in[4];
-        string callsign = in[5];
-        string country = in[6];
-        bool active = in[7] == "Y";
-        AirlineNode* data = new AirlineNode(name, alias, IATA, ICAO, callsign, country, active);
+        string city = in[2];
+        string country = in[3];
+        string IATA = in[4];
+        string ICAO = in[5];
+        double latit = stod(in[6]);
+        double longit = stod(in[7]);
+        int alt = stoi(in[8]);
+        string timeZone = in[9];
+        string DST = in[10];
+        string tz = in[11];
+        AirportNode* data = new AirportNode(name, city, country, IATA, ICAO, latit, longit,
+            alt, timeZone, DST, tz);
         _map[id] = data;
     }
     infile.close();

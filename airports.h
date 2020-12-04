@@ -55,7 +55,7 @@ class Airports {
          * Initialzation of all the airports
          * @param filename the name of the file to read
          */
-        void init();
+        Airports();
 
         /** 
          * Get the internal storage element by the airport id specified
