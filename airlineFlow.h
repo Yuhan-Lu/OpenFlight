@@ -36,6 +36,9 @@ class AirlineFlow {
          */
         vector<int> getAirlineBetweenAirports(string sourceIATA, string destIATA);
 
+
+        Graph getGraph() {return _airlineMap;}
+
     private:
         /** All the airlines */
         Airlines* _airlines;
