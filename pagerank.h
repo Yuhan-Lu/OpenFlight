@@ -5,7 +5,10 @@
 #include "routes.h"
 #include "cs225/graph.h"
 #include "util.h"
-
+/**
+ * used as Pagerank method by Markov Chain.
+ *
+ */
 class Pagerank{
     public:
         /**
@@ -13,11 +16,6 @@ class Pagerank{
          */
         class Matrix {
             public:
-                /**
-                 * Inner class matrix for Pagerank
-                 */
-
-
                 /** 
                  * Constructs one matrix
                  * @param r number of rows of the matrix
@@ -38,6 +36,12 @@ class Pagerank{
                     }
                 }
 
+                Matrix(double ** value, int rows, int cols) {
+                    _nRows = rows;
+                    _nCols = cols;
+                    _value = value;
+                }
+
                 void printMatrix() {
                     for (int i = 0; i < _nRows; i++) {
                         for (int j = 0; j < _nCols; j++) {
@@ -46,7 +50,12 @@ class Pagerank{
                         cout<< endl;
                     }
                 }
-
+                int returnRows() {
+                    return _nRows;
+                }
+                int returnCols() {
+                    return _nCols;
+                }
                 double ** _value;
             private:
 

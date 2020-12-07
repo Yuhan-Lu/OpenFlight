@@ -29,7 +29,6 @@ void Pagerank::loadLabelRank() {
         viMap[tempVertex[i]] = i;
         cout << " Vertex order" << i << ' ' << tempVertex[i] << endl;
     }
-
     for (int i = 0; i < int(tempEdges.size()); i++) {
         Edge e = tempEdges[i];
         graphMat->_value[viMap[e.source]][viMap[e.dest]] = stoi(e.getLabel());

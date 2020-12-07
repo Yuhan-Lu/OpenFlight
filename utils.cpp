@@ -51,4 +51,26 @@ namespace utils {
         //6371 is the radian of earth in km
         return 2 * asin(sqrt(part1)) * 6371;
     }
+
+    Pagerank::Matrix* matrixMul(Pagerank::Matrix * matrix1, Pagerank::Matrix * matrix2) {
+        double **mat1 = matrix1->_value;
+        double **mat2 = matrix2->_value;
+        int mat1xRow = matrix1->returnRows();
+        int mat1yCol = matrix1->returnCols();
+        int mat2xRow = matrix2->returnRows();
+        int mat2yCol = matrix2->returnCols();
+        double **res = new double*[mat1xRow];
+        // initial and compute value for res matrix
+        for (int i = 0; i < mat1xRow; i++) {
+            res[i] = new double[mat2yCol];
+            for (int j = 0; j < mat2yCol; j++) {
+                res[i][j] = 0;
+                for (int k = 0; k < mat1yCol; k ++) {
+                    res[i][j] += mat1[i][k] * mat2[k][j];
+                }
+            }
+        }
+        Pagerank::Matrix* toReturn = new Pagerank::Matrix(res, mat1xRow, mat2yCol);
+        return toReturn;
+    }
 }

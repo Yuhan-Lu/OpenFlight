@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <math.h>
+#include "pagerank.h"
 
 using std::vector;
 using std::string;
@@ -24,4 +25,6 @@ namespace utils {
      * @returns distance between these two points
      */
     double getDistance(double latitude1, double longtitude1, double latitude2, double longtitude2);
+
+    Pagerank::Matrix* matrixMul(Pagerank::Matrix * mat1, Pagerank::Matrix * mat2);
 }
