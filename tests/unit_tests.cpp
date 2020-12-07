@@ -164,7 +164,7 @@ TEST_CASE("check matrix multiplication Larger", "[valgrind][weight=1]") {
   
   Pagerank::Matrix *mat1 = new Pagerank::Matrix(value1, 4, 4);
   Pagerank::Matrix *mat2 = new Pagerank::Matrix(value2, 4, 4);
-  double ** res = (utils::matrixMul(mat1, mat2))->_valuegit;
+  double ** res = (utils::matrixMul(mat1, mat2))->_value;
   
   REQUIRE(res[0][0] == 4);
   REQUIRE(res[0][1] == 8);
