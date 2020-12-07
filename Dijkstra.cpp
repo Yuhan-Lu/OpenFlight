@@ -5,16 +5,15 @@
 using namespace std;
 using std::stoi;
 
-/** the below code partly referenced from 
- * https://github.com/mburst/dijkstras-algorithm/blob/master/dijkstras.cpp
-*/
+
 vector<int> shortest_path(Graph G, int source, int dest) {
     unordered_map<int, int> dist; // a map to correspond each vertex to its dist from source
     unordered_map<int, int> previous; // maps current vertex -> its previous vetex
     vector<int> pq; // the priority queue
     vector<int> path; // the vector used to store the vertices along the shortest path
 
-    auto comparator = [&] (int left, int right) { return dist[left] > dist[right]; };
+    int INF = numeric_limits<int>::max();
+    auto comparator = [&] (int first, int sec) { return dist[first] > dist[sec]; };
 
     // loop through all the vertices to initialize pq and dist
     for (auto & vertex : G.getVertices()) {
@@ -22,7 +21,7 @@ vector<int> shortest_path(Graph G, int source, int dest) {
         if (v == source) {
             dist[v] = 0;
         } else {
-            dist[v] = numeric_limits<int>::max();
+            dist[v] = INF;
         }
         pq.push_back(v);
         push_heap(pq.begin(), pq.end(), comparator);
@@ -35,12 +34,15 @@ vector<int> shortest_path(Graph G, int source, int dest) {
         pq.pop_back();
         Vertex m = to_string(min);
 
-        if (dist[min] == numeric_limits<int>::max()) {
+        if (dist[min] == INF) {
             break;
         }
+
+        //loop through all the neighbours of the current min
         for (auto & neighbour : G.getAdjacent(m)) {
             int cost = G.getEdgeWeight(m, neighbour);
             if (dist[min] + cost < dist[stoi(neighbour)]) {
+                //update neighbour's distances
                 dist[stoi(neighbour)] = min + cost;
                 previous[stoi(neighbour)] = min;
                 make_heap(pq.begin(), pq.end(), comparator);
@@ -57,6 +59,7 @@ vector<int> shortest_path(Graph G, int source, int dest) {
         }
 
     }
+    //reverse path to get the correct direction
     reverse(path.begin(), path.end());
     return path;
 
