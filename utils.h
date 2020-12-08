@@ -24,4 +24,6 @@ namespace utils {
      * @returns distance between these two points
      */
     double getDistance(double latitude1, double longtitude1, double latitude2, double longtitude2);
+
+    const static int ERROR_AIRPORT_ID = -pow(2,30);
 }

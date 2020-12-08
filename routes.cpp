@@ -30,9 +30,9 @@ Routes::Routes(bool test) {
         int airlineID = in[1].size() == 0 ? -1 : stoi(in[1]);
         string airport1 = in[2];
         /* potential wrong data */
-        int airportID1 = in[3].size() == 0 ? -1 : stoi(in[3]);
+        int airportID1 = in[3].size() == 0 ? utils::ERROR_AIRPORT_ID : stoi(in[3]);
         string airport2 = in[4];
-        int airportID2 = in[5].size() == 0 ? -1 : stoi(in[5]);
+        int airportID2 = in[5].size() == 0 ? utils::ERROR_AIRPORT_ID : stoi(in[5]);
         bool codeshare = in[6] == "Y";
         int stops = stoi(in[7]);
         string equipment = in[8];

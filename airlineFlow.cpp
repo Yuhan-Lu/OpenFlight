@@ -1,39 +1,55 @@
 #include "airlineFlow.h"
 #include "utils.h"
+#include <queue>
+#include <stack>
 
+using std::queue;
+using std::stack;
 using std::stoi;
 using utils::getDistance;
 
 AirlineFlow::AirlineFlow(bool test) : _airlines(new Airlines(test)), _airports(new Airports(test)), 
-        _planes(new Planes(test)), _routes(new Routes(test)), _airlineMap(true, true) {
-    /* add all the airports to the graph */
-    for (auto it = _airports->begin(); it != _airports->end(); ++it) {
-        _airlineMap.insertVertex(to_string(it->first));
-    }
-    /* add all the routes to the graph and construct edge list */
+        _planes(new Planes(test)), _routes(new Routes(test)), _routeGraph(new Graph(true, true)) {
+    // Initial rng engine
+    timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts); 
+    _rng = default_random_engine(ts.tv_nsec);
+
+    // add all the routes to the graph and construct edge list 
     for (auto it = _routes->begin(); it != _routes->end(); ++it) {
         int id = (*it)->airlineID;
         int source = (*it)->airportID1;
-        /* prevent possible error in the dataset */
-        if (source == -1) {
+        // prevent possible error in the dataset 
+        if (source == utils::ERROR_AIRPORT_ID) {
             source = _airports->getAirportIDByIATA((*it)->airport1);
-            if (source == -1) continue;
+            if (source == utils::ERROR_AIRPORT_ID) continue;
         }
         int destination = (*it)->airportID2;
-        /* prevent possible error in the dataset */
-        if (destination == -1) {
+        // prevent possible error in the dataset 
+        if (destination == utils::ERROR_AIRPORT_ID) {
             destination = _airports->getAirportIDByIATA((*it)->airport2);
-            if (destination == -1) continue;
+            if (destination == utils::ERROR_AIRPORT_ID) continue;
         }
+        string strSource = to_string(source);
+        string strDestination = to_string(destination);
+        if (!_routeGraph->vertexExists(strSource)) {
+            _routeGraph->insertVertex(strSource);
+            _d.addElement(strSource);
+        } 
+        if (!_routeGraph->vertexExists(strDestination)) {
+            _routeGraph->insertVertex(strDestination);
+            _d.addElement(strDestination);
+        } 
+        _d.setUnion(strSource, strDestination);
         string label = to_string(source) + "_" + to_string(destination);
         auto edge = _edgeList.find(label);
         if (edge != _edgeList.end()) {
-            /* the edge already exists */
+            // the edge already exists 
             edge->second.push_back(id);
-            int num = stoi(_airlineMap.getEdge(to_string(source), to_string(destination)).getLabel());
-            _airlineMap.setEdgeLabel(to_string(source), to_string(destination), to_string(num + 1));
+            int num = stoi(_routeGraph->getEdge(to_string(source), to_string(destination)).getLabel());
+            _routeGraph->setEdgeLabel(to_string(source), to_string(destination), to_string(num + 1));
         } else {
-            /* the edge does not exist */
+            // the edge does not exist 
             auto sourceAirport = _airports->getAirportByID(source);
             double sourceLatitude = sourceAirport->latit;
             double sourceLongitude = sourceAirport->longit;
@@ -42,11 +58,15 @@ AirlineFlow::AirlineFlow(bool test) : _airlines(new Airlines(test)), _airports(n
             double destLongitude = destAirport->longit;
             double distance = getDistance(sourceLatitude, sourceLongitude, destLatitude, destLongitude);
             _edgeList[label].push_back(id);
-            _airlineMap.insertEdge(to_string(source), to_string(destination));
-            _airlineMap.setEdgeLabel(to_string(source), to_string(destination), "1");
-            _airlineMap.setEdgeWeight(to_string(source), to_string(destination), distance);
+            _routeGraph->insertEdge(to_string(source), to_string(destination));
+            _routeGraph->setEdgeLabel(to_string(source), to_string(destination), "1");
+            _routeGraph->setEdgeWeight(to_string(source), to_string(destination), distance);
         }
     }
+    _d.printStatusReport();
+    // remove inactive airports
+    vector<Vertex> vList = _routeGraph->getVertices();
+    cout << vList.size() << endl;
 }
 
 AirlineFlow::~AirlineFlow() {
@@ -70,4 +90,85 @@ vector<int> AirlineFlow::getAirlineBetweenAirports(string sourceIATA, string des
     auto res = _edgeList.find(label);
     if (res == _edgeList.end()) return vector<int>();
     return res->second;
+}
+
+Graph* AirlineFlow::getRouteGraph() const {
+    return _routeGraph;
+}
+
+vector<Vertex> AirlineFlow::bfs(int startAirportID) {
+    string strStartID = to_string(startAirportID);
+    if (startAirportID == -1 && _bfsStartingAirportID == "-1") {
+        // none is initialized, random select one
+        auto vList = _routeGraph->getVertices();
+        _bfsStartingAirportID = vList[_rng() % vList.size()];
+    } else if ((startAirportID == -1 && _bfsStartingAirportID != "-1") 
+            || strStartID == _bfsStartingAirportID)
+        // startAirportID is not changed and _bfsStartingAirportID is properly initialized, or they are equal 
+        return _bfsResult;
+    else {
+        // startAirportID is different from _bfsStartingAirportID
+        if (!_routeGraph->vertexExists(strStartID)) {
+            cout << "In function BFS, specified vertex " << strStartID << " does not exist, aborting..." << endl;
+            return vector<Vertex>();
+        }
+        _bfsStartingAirportID = strStartID;
+    }
+    _bfsResult.clear();
+    unordered_map<Vertex, int> visited;
+    queue<Vertex> q;
+    visited[_bfsStartingAirportID] = 0;
+    q.push(_bfsStartingAirportID);
+    while (!q.empty()) {
+        Vertex curr = q.front();
+        int currHeight = visited[curr];
+        q.pop();
+        _bfsResult.push_back(curr);
+        vector<Vertex> l = _routeGraph->getAdjacent(curr);
+        for (auto it = l.begin(); it != l.end(); ++it) {
+            if (visited.count(*it)) continue;
+            visited[*it] = currHeight + 1;
+            q.push(*it);
+        }
+    }
+    return _bfsResult;
+}
+
+vector<Vertex> AirlineFlow::dfs(int startAirportID) {
+    string strStartID = to_string(startAirportID);
+    if (startAirportID == -1 && _dfsStartingAirportID == "-1") {
+        // none is initialized, random select one
+        auto vList = _routeGraph->getVertices();
+        _dfsStartingAirportID = vList[_rng() % vList.size()];
+    } else if ((startAirportID == -1 && _dfsStartingAirportID != "-1") 
+            || strStartID == _dfsStartingAirportID)
+        // startAirportID is not changed and _dfsStartingAirportID is properly initialized, or they are equal 
+        return _dfsResult;
+    else {
+        // startAirportID is different from _dfsStartingAirportID
+        if (!_routeGraph->vertexExists(strStartID)) {
+            cout << "In function DFS, specified vertex " << strStartID << " does not exist, aborting..." << endl;
+            return vector<Vertex>();
+        }
+        _dfsStartingAirportID = strStartID;
+    }
+    
+    _dfsResult.clear();
+    unordered_map<Vertex, int> visited;
+    stack<Vertex> s;
+    visited[_dfsStartingAirportID] = 0;
+    s.push(_dfsStartingAirportID);
+    while (!s.empty()) {
+        Vertex curr = s.top();
+        int currHeight = visited[curr];
+        s.pop();
+        _dfsResult.push_back(curr);
+        vector<Vertex> l = _routeGraph->getAdjacent(curr);
+        for (auto it = l.begin(); it != l.end(); ++it) {
+            if (visited.count(*it)) continue;
+            visited[*it] = currHeight + 1;
+            s.push(*it);
+        }
+    }
+    return _dfsResult;
 }

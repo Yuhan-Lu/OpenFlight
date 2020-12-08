@@ -13,7 +13,8 @@ using std::endl;
 int main() {
 
     AirlineFlow airlineFlow(false);
-    vector<int> res = airlineFlow.getAirlineBetweenAirports(4355, 3876);
-    for (int i : res) cout << i << endl;
+    vector<Vertex> res = airlineFlow.dfs();
+    // for (Vertex i : res) cout << i << endl;
+    cout << "SIZE:\t" << res.size() << endl;
     return 0;
 }

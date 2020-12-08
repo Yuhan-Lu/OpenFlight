@@ -52,5 +52,5 @@ Airports::AirportNode* Airports::getAirportByID(int id) {
 
 int Airports::getAirportIDByIATA(string IATA) {
     if (_IATAToID.find(IATA) != _IATAToID.end()) return _IATAToID[IATA];
-    return -1;
+    return utils::ERROR_AIRPORT_ID;
 }
