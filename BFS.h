@@ -13,18 +13,12 @@
 using std::unordered_map;
 using std::vector;
 
-class Traversal {
-    public:
+namespace bfs {
     /**
     * use BFS to traverse all vertex in the graph
-    * @param start the start point on the graph
+    * @param start the ID of the source airport
     */
-    vector<bool> BFS(Graph G, int start);
-
-    private:
-    Graph _airlineMap;
-
-
+    vector<int> BFS(Graph G, int start);
 
 };
 

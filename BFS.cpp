@@ -4,39 +4,49 @@
 #include <algorithm>
 #include <limits>
 
-vector<bool> Traversal::BFS(Graph G, int start) {
-    vector<bool> visited;
-    vector<int> queue;
-    Vertex m;
+using std::stoi;
 
-    //set all vertices not not to be visited except the start
-    for (auto & vertex : G.getVertices()) {
-        int v = stoi(vertex);
-        if (v == start) {
-            visited[v] = true;
-        } else {
-            visited[v] = false;
-        }
-        
-    }
+namespace bfs {
+    vector<int> BFS(Graph G, int start) {
+        unordered_map<int, bool> visited;
+        vector<int> queue;
+        Vertex m;
+        vector<int> visitedList;
 
-    //add start node to the quene;
-    int s = start;
-    queue.push_back(s);
-
-    while(!queue.empty()) {
-        s = queue.front();
-        queue.erase(queue.begin);
-        m = to_string(s);
-        for (auto & neighbour : G.getAdjacent(m)) {
-            int v = stoi(neighbour);
-            if (!visited[v]) {
+        //set all vertices not not to be visited except the start
+        for (auto & vertex : G.getVertices()) {
+            int v = stoi(vertex);
+            //cout<<v<<endl;
+            if (v == start) {
+                //cout<<v<<endl;
                 visited[v] = true;
-                queue.push_back(v);
+                visitedList.push_back(v);
+                break;
+            } else {
+                visited[v] = false;
             }
+            
         }
-        
-    }
-    return visited;
 
+        //add start node to the quene;
+        int s = start;
+        queue.push_back(s);
+
+        while(!queue.empty()) {
+            s = queue.front();
+            queue.erase(queue.begin());
+            m = to_string(s);
+            for (auto & neighbour : G.getAdjacent(m)) {
+                int v = stoi(neighbour);
+                if (!visited[v]) {
+                    visited[v] = true;
+                    visitedList.push_back(v);
+                    queue.push_back(v);
+                }
+            }
+            
+        }
+        return visitedList;
+
+    }
 }
