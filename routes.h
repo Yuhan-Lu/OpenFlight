@@ -1,12 +1,10 @@
 #pragma once
 #include <vector>
 #include <string>
-#include <unordered_map>
-#include <iterator>
 
 using std::vector;
 using std::string;
-using std::unordered_map;
+
 
 // for routes.dat
 class Routes {
@@ -28,14 +26,18 @@ class Routes {
                  * @param stops Number of stops on this flight ("0" for direct)
                  * @param equipment 3-letter codes for plane type
                  */
-                RoutesNode(string airline, string airport1, int airportID1, 
+
+                RoutesNode(string airline, int airlineID, string airport1, int airportID1, 
                         string airport2, int airportID2, bool codeshare, int stops, string equipment) : 
-                    airline(airline),  airport1(airport1), airportID1(airportID1), airport2(airport2),
+                    airline(airline), airlineID(airlineID), airport1(airport1), airportID1(airportID1), airport2(airport2),
+
                     airportID2(airportID2), codeshare(codeshare), stops(stops), equipment(equipment) {};
 
                 /* All the data should be constant */
                 const string airline;
-                //const int airlineID;
+
+                const int airlineID;
+
                 const string airport1;
                 const int airportID1;
                 const string airport2;
@@ -47,9 +49,11 @@ class Routes {
 
         /**
          * Initialzation of all the airlines
-         * @param filename the name of the file to read
+
+         * @param test whether read the actural files or the test files
          */
-        void init();
+        Routes(bool test);
+
 
         /** 
          * Get the internal storage element by the airline id specified
@@ -57,7 +61,25 @@ class Routes {
          */
         RoutesNode* getAirlineByID(int id);
 
+
+        /**
+         * Begin iterator of all the routes, used when traversing through the dataset to construct a graph
+         * @returns const begin iterator
+         */
+        vector<RoutesNode*>::const_iterator begin() const { 
+            return _vector.begin(); 
+        };
+
+        /**
+         * End iterator of all the routes, used when traversing through the dataset to construct a graph
+         * @returns const end iterator
+         */
+        vector<RoutesNode*>::const_iterator end() const { 
+            return _vector.end(); 
+        };
+
     private:
-        /* Internal storage that holds all the airline infomation */
-        unordered_map<int, RoutesNode*> _map;
+        /* Internal storage that holds all the routes infomation */
+        vector<RoutesNode*> _vector;
+
 };

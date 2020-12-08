@@ -13,6 +13,7 @@
 using utils::getDistance;
 using namespace std;
 
+
 TEST_CASE("check the Airlines constructor and getAirlineByID.", "[valgrind][weight=1]") {
   Airlines airlines(true);
   REQUIRE(airlines.getAirlineByID(2)->name == "135 Airways");
@@ -65,7 +66,7 @@ TEST_CASE("check getPlaneByIATA.", "[valgrind][weight=1]") {
 }
 
 TEST_CASE("check constructor of routes.cpp.", "[valgrind][weight=1]") {
-  Routes routes(true);
+
   Routes::RoutesNode* begin = *(routes.begin()); 
   //std::cout << begin->equipment << std::endl;
   REQUIRE(begin->airline == "2B");
@@ -92,6 +93,7 @@ TEST_CASE("check distance and route.cpp distance", "[valgrind][weight=1]") {
   
   
 }
+
 
 
 

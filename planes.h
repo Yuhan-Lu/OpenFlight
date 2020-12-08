@@ -2,7 +2,8 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <iterator>
+
+
 
 using std::vector;
 using std::string;
@@ -34,15 +35,34 @@ class Planes {
 
         /**
          * Initialzation of all planes data
-         * @param filename the name of the file to read
+
+         * @param test whether read the actural files or the test files
          */
-        void init();
+        Planes(bool test);
+
 
         /** 
          * Get the internal storage element by the plane id specified
          * @param id the ID of the airline
          */
         PlanesNode* getPlaneByIATA(string IATA);
+
+        /**
+         * Begin iterator of all the planes, used when traversing through the dataset to construct a graph
+         * @returns const begin iterator
+         */
+        unordered_map<string, Planes::PlanesNode*>::const_iterator begin() const { 
+            return _map.begin(); 
+        };
+
+        /**
+         * End iterator of all the planes, used when traversing through the dataset to construct a graph
+         * @returns const end iterator
+         */
+        unordered_map<string, Planes::PlanesNode*>::const_iterator end() const { 
+            return _map.end(); 
+        };
+
 
     private:
         /* Internal storage that holds all the plane infomation */
