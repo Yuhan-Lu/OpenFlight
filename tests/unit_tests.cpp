@@ -4,9 +4,14 @@
 #include "../airports.h"
 #include "../planes.h"
 #include "../routes.h"
+#include "../utils.h"
 
 #include <iostream>
 #include <map>
+#include <vector>
+
+using utils::getDistance;
+using namespace std;
 
 
 TEST_CASE("check the Airlines constructor and getAirlineByID.", "[valgrind][weight=1]") {
@@ -61,7 +66,7 @@ TEST_CASE("check getPlaneByIATA.", "[valgrind][weight=1]") {
 }
 
 TEST_CASE("check constructor of routes.cpp.", "[valgrind][weight=1]") {
-  Routes routes(false);
+
   Routes::RoutesNode* begin = *(routes.begin()); 
   //std::cout << begin->equipment << std::endl;
   REQUIRE(begin->airline == "2B");
@@ -73,6 +78,23 @@ TEST_CASE("check constructor of routes.cpp.", "[valgrind][weight=1]") {
   REQUIRE(begin->codeshare == false);
   REQUIRE(begin->stops == 0);
   //REQUIRE(begin->equipment == "CR2");
+  
 }
+
+TEST_CASE("check distance and route.cpp distance", "[valgrind][weight=1]") {
+  Airports airports(true);
+  double lati1 = airports.getAirportByID(2965)->latit;
+  double longti1 = airports.getAirportByID(2965)->longit;
+  double lati2 = airports.getAirportByID(2990)->latit;
+  double longti2 = airports.getAirportByID(2990)->longit;
+  double dist = getDistance(lati1,longti1,lati2,longti2);
+  //std::cout << dist << std::endl;
+  REQUIRE(dist == getDistance(43.449902,39.9566,55.606201171875,49.278701782227));
+  
+  
+}
+
+
+
 
 

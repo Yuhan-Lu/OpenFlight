@@ -5,6 +5,7 @@
 using std::vector;
 using std::string;
 
+
 // for routes.dat
 class Routes {
     public:
@@ -25,14 +26,18 @@ class Routes {
                  * @param stops Number of stops on this flight ("0" for direct)
                  * @param equipment 3-letter codes for plane type
                  */
+
                 RoutesNode(string airline, int airlineID, string airport1, int airportID1, 
                         string airport2, int airportID2, bool codeshare, int stops, string equipment) : 
                     airline(airline), airlineID(airlineID), airport1(airport1), airportID1(airportID1), airport2(airport2),
+
                     airportID2(airportID2), codeshare(codeshare), stops(stops), equipment(equipment) {};
 
                 /* All the data should be constant */
                 const string airline;
+
                 const int airlineID;
+
                 const string airport1;
                 const int airportID1;
                 const string airport2;
@@ -44,15 +49,18 @@ class Routes {
 
         /**
          * Initialzation of all the airlines
+
          * @param test whether read the actural files or the test files
          */
         Routes(bool test);
+
 
         /** 
          * Get the internal storage element by the airline id specified
          * @param id the ID of the airline
          */
         RoutesNode* getAirlineByID(int id);
+
 
         /**
          * Begin iterator of all the routes, used when traversing through the dataset to construct a graph
@@ -73,4 +81,5 @@ class Routes {
     private:
         /* Internal storage that holds all the routes infomation */
         vector<RoutesNode*> _vector;
+
 };
