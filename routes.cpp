@@ -8,7 +8,6 @@ using std::cout;
 using std::endl;
 using std::ifstream;
 using std::unordered_map;
-
 using std::stoi;
 using std::to_string;
 using utils::readEntry;
@@ -21,12 +20,10 @@ Routes::Routes(bool test) {
     // handle error
     if (!infile.is_open()) {
         cout << "can not open the file" << endl;
-
         exit(1);
     }
     // loop through dat by lines
     while(getline(infile,line)) {  
-
         vector<string> in = readEntry(line); 
         string airline = in[0];
         /* if there is no airline of that name, record the airline number as -1 */
@@ -45,4 +42,3 @@ Routes::Routes(bool test) {
     }
     infile.close();
 }
-

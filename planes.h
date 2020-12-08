@@ -3,8 +3,6 @@
 #include <string>
 #include <unordered_map>
 
-
-
 using std::vector;
 using std::string;
 using std::unordered_map;
@@ -35,11 +33,9 @@ class Planes {
 
         /**
          * Initialzation of all planes data
-
          * @param test whether read the actural files or the test files
          */
         Planes(bool test);
-
 
         /** 
          * Get the internal storage element by the plane id specified
@@ -62,7 +58,6 @@ class Planes {
         unordered_map<string, Planes::PlanesNode*>::const_iterator end() const { 
             return _map.end(); 
         };
-
 
     private:
         /* Internal storage that holds all the plane infomation */
