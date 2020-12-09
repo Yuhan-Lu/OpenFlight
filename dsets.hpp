@@ -1,10 +1,10 @@
-#include "dsets.h"
-
 template <typename T>
 void DisjointSets<T>::addElement(T ele) {
+    if (_innerMapping.count(ele)) cout << "ERROR" << endl;
     int idx = _storage.size();
     _innerMapping[ele] = idx;
     _storage.push_back(-1);
+    _outerMapping.push_back(ele);
 }
 
 template <typename T>

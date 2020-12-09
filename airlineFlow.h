@@ -4,11 +4,11 @@
 #include "planes.h"
 #include "routes.h"
 #include "cs225/graph.h"
-#include "cs225/dsets.cpp"
+#include "dsets.h"
+#include "utils.h"
 #include <unordered_map>
 #include <vector>
 #include <random>
-#include <sys/time.h>
 
 using std::unordered_map;
 using std::vector;
@@ -46,8 +46,18 @@ class AirlineFlow {
          */
         Graph* getRouteGraph() const;
 
+        /** Returns the bfs of the graph given starting airport. If the airport ID is not specified and
+         * bfs was done, return the result of last time, else randomly select an airport as starting
+         * point
+         * @param startAirportID the ID of the starting airport
+         */
         vector<Vertex> bfs(int startAirportID = -1);
 
+        /** Returns the dfs of the graph given starting airport. If the airport ID is not specified and
+         * dfs was done, return the result of last time, else randomly select an airport as starting
+         * point
+         * @param startAirportID the ID of the starting airport
+         */
         vector<Vertex> dfs(int startAirportID = -1);
 
 
@@ -76,16 +86,22 @@ class AirlineFlow {
          */
         unordered_map<string, vector<int>> _edgeList;
 
+        /** Stores the result of bfs */
         vector<Vertex> _bfsResult;
 
-        string _bfsStartingAirportID = "-1";
+        /** Stores the starting point of bfs */
+        string _bfsStartingAirportID = utils::STR_ERROR_AIRPORT_ID;
 
+        /** Stores the result of dfs */
         vector<Vertex> _dfsResult;
         
-        string _dfsStartingAirportID = "-1";
+        /** Stores the starting point of dfs */
+        string _dfsStartingAirportID = utils::STR_ERROR_AIRPORT_ID;
 
+        /** The disjoint set */
         DisjointSets<string> _d;
 
+        /** random number generator */
         default_random_engine _rng;
 
 };

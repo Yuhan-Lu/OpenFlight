@@ -1,5 +1,4 @@
 #include "airlineFlow.h"
-#include "utils.h"
 #include <queue>
 #include <stack>
 
@@ -11,9 +10,7 @@ using utils::getDistance;
 AirlineFlow::AirlineFlow(bool test) : _airlines(new Airlines(test)), _airports(new Airports(test)), 
         _planes(new Planes(test)), _routes(new Routes(test)), _routeGraph(new Graph(true, true)) {
     // Initial rng engine
-    timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts); 
-    _rng = default_random_engine(ts.tv_nsec);
+    _rng = default_random_engine(time(nullptr));
 
     // add all the routes to the graph and construct edge list 
     for (auto it = _routes->begin(); it != _routes->end(); ++it) {
@@ -40,7 +37,6 @@ AirlineFlow::AirlineFlow(bool test) : _airlines(new Airlines(test)), _airports(n
             _routeGraph->insertVertex(strDestination);
             _d.addElement(strDestination);
         } 
-        _d.setUnion(strSource, strDestination);
         string label = to_string(source) + "_" + to_string(destination);
         auto edge = _edgeList.find(label);
         if (edge != _edgeList.end()) {
@@ -61,9 +57,11 @@ AirlineFlow::AirlineFlow(bool test) : _airlines(new Airlines(test)), _airports(n
             _routeGraph->insertEdge(to_string(source), to_string(destination));
             _routeGraph->setEdgeLabel(to_string(source), to_string(destination), "1");
             _routeGraph->setEdgeWeight(to_string(source), to_string(destination), distance);
+            _d.setUnion(strSource, strDestination);
         }
     }
-    _d.printStatusReport();
+    auto parts = _d.getStatusReport(true);
+    // _d.printStatusReport();
     // remove inactive airports
     vector<Vertex> vList = _routeGraph->getVertices();
     cout << vList.size() << endl;
@@ -97,12 +95,16 @@ Graph* AirlineFlow::getRouteGraph() const {
 }
 
 vector<Vertex> AirlineFlow::bfs(int startAirportID) {
+    if (startAirportID == utils::ERROR_AIRPORT_ID) {
+        cout << "In function dfs, airport ID is not vaild, aborting..." << endl;
+        return _bfsResult;
+    }
     string strStartID = to_string(startAirportID);
-    if (startAirportID == -1 && _bfsStartingAirportID == "-1") {
+    if (startAirportID == -1 && _bfsStartingAirportID == utils::STR_ERROR_AIRPORT_ID) {
         // none is initialized, random select one
         auto vList = _routeGraph->getVertices();
         _bfsStartingAirportID = vList[_rng() % vList.size()];
-    } else if ((startAirportID == -1 && _bfsStartingAirportID != "-1") 
+    } else if ((startAirportID == -1 && _bfsStartingAirportID != utils::STR_ERROR_AIRPORT_ID) 
             || strStartID == _bfsStartingAirportID)
         // startAirportID is not changed and _bfsStartingAirportID is properly initialized, or they are equal 
         return _bfsResult;
@@ -135,12 +137,16 @@ vector<Vertex> AirlineFlow::bfs(int startAirportID) {
 }
 
 vector<Vertex> AirlineFlow::dfs(int startAirportID) {
+    if (startAirportID == utils::ERROR_AIRPORT_ID) {
+        cout << "In function dfs, airport ID is not vaild, aborting..." << endl;
+        return _dfsResult;
+    }
     string strStartID = to_string(startAirportID);
-    if (startAirportID == -1 && _dfsStartingAirportID == "-1") {
+    if (startAirportID == -1 && _dfsStartingAirportID == utils::STR_ERROR_AIRPORT_ID) {
         // none is initialized, random select one
         auto vList = _routeGraph->getVertices();
         _dfsStartingAirportID = vList[_rng() % vList.size()];
-    } else if ((startAirportID == -1 && _dfsStartingAirportID != "-1") 
+    } else if ((startAirportID == -1 && _dfsStartingAirportID != utils::STR_ERROR_AIRPORT_ID) 
             || strStartID == _dfsStartingAirportID)
         // startAirportID is not changed and _dfsStartingAirportID is properly initialized, or they are equal 
         return _dfsResult;
