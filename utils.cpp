@@ -90,17 +90,17 @@ namespace utils {
         return _value[r][c];
     }
 
-    Matrix* matrixMul(Matrix * matrix1, Matrix * matrix2) {
-        assert(matrix1->numCols() == matrix2->numRows());
-        int mat1Row = matrix1->numRows();
-        int mat1Col = matrix1->numCols();
-        int mat2Col = matrix2->numCols();
+    Matrix* matrixMul(Matrix* mat1, Matrix* mat2) {
+        assert(mat1->numCols() == mat2->numRows());
+        int mat1Row = mat1->numRows();
+        int mat1Col = mat1->numCols();
+        int mat2Col = mat2->numCols();
         Matrix* toReturn = new Matrix(mat1Row, mat2Col, false);
         for (int i = 0; i < mat1Row; i++) {
             for (int j = 0; j < mat2Col; j++) {
                 double sum = 0;
                 for (int k = 0; k < mat1Col; k ++) {
-                    sum += matrix1->getEntry(i, k) * matrix2->getEntry(k, j);
+                    sum += mat1->getEntry(i, k) * mat2->getEntry(k, j);
                 }
                 toReturn->setEntry(i, j, sum);
             }

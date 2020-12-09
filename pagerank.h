@@ -21,16 +21,35 @@ class Pagerank {
          */
         Pagerank(Graph* g, bool loadType);
 
+        /**
+         * Return the matrix used for PageRank
+         * @returns matrix used for PageRank
+         */
         Matrix* returnMatrix() {
             return _graphMat;
         }
 
-        void printMatrix();
     private:
-        void loadLabelRank();
-        void loadWeightRank();
+        /**
+         * Load the matrix with edge label (number of airlines that fly in this route) as the weight
+         */
+        void _loadLabelRank();
+
+        /**
+         * Load the matrix with edge weight (distance between two airports) as the weight
+         */
+        void _loadWeightRank();
+
+        /** Graph used when generating matrix */
         Graph* _graph;
+
+        /** Generated matrix */
         Matrix* _graphMat;
-        unordered_map<Vertex, int> _viMap;
+
+        /** Mapping from vertex to its associated index in the matrix */
+        unordered_map<Vertex, int> _vertexToIdx;
+
+        /** Mapping from index in the matrix to its associated vertex */
+        vector<Vertex> _idxToVertex;
 
 };

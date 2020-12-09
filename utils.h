@@ -105,13 +105,10 @@ namespace utils {
 
     
     /**
-     * Get the distance between two points on earth given their latitude and
-     * longtitude. 
-     * @param latitude1 latitude of the first point
-     * @param longtitude1 longtitude of the first point
-     * @param latitude2 latitude of the second point
-     * @param longtitude2 longtitude of the second point
-     * @returns distance between these two points
+     * Matrix multiplication
+     * @param mat1 first matrix
+     * @param mat2 second matrix
+     * @returns result of multiplication
      */
     Matrix* matrixMul(Matrix* mat1, Matrix* mat2);
 
