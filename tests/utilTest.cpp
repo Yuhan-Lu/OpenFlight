@@ -37,7 +37,7 @@ TEST_CASE("check matrix multiplication", "[valgrind][weight=1]") {
   value1[0][1] = -1.0;
   value1[1][0] = -1.0;
   value1[1][1] = 1.0;
-  //{ {1, 1}, {1, 1}};
+  //{ {1, 3}, {1, 1}};
   double ** value2;
   value2 = new double*[2];
   for (int i = 0; i < 2; i++) {
