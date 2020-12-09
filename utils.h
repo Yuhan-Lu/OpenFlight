@@ -35,7 +35,7 @@ namespace utils {
              * Get the number of rows the matrix has
              * @returns number of rows the matrix has
              */
-            int numRows() {
+            int numRows() const {
                 return _nRows;
             }
             
@@ -43,7 +43,7 @@ namespace utils {
              * Get the number of cols the matrix has
              * @returns number of cols the matrix has
              */
-            int numCols() {
+            int numCols() const {
                 return _nCols;
             }
             
@@ -51,7 +51,7 @@ namespace utils {
              * Get the shape of the matrix
              * @returns shape of the matrix
              */
-            pair<int, int> shape() {
+            pair<int, int> shape() const {
                 return pair<int, int>(_nRows, _nCols);
             }
 
@@ -69,20 +69,21 @@ namespace utils {
              * @param c column of the entry
              * @returns the value of the entry
              */
-            double getEntry(int r, int c);
+            double getEntry(int r, int c) const;
 
             /** 
              * Prints the matrix
              */
             void printMatrix();
 
-            double ** _value;
         private:
             /** number of rows */
             int _nRows;
 
             /** number of cols */
             int _nCols;
+
+            double ** _value;
     };
 
     /**
@@ -112,7 +113,22 @@ namespace utils {
      */
     Matrix* matrixMul(Matrix* mat1, Matrix* mat2);
 
+    
+    /** 
+     * Returns of two matrixs are the same
+     * @param other the other matrix
+     */
+    bool operator!=(const Matrix& lhs, const Matrix& rhs);
+
+    /** 
+     * Returns of two matrixs are the same
+     * @param other the other matrix
+     */
+    bool operator==(const Matrix& lhs, const Matrix& rhs);
+
     /** Error code used when airport ID is not recognizable */
     const static int ERROR_AIRPORT_ID = -pow(2,30);
     const static string STR_ERROR_AIRPORT_ID = to_string(ERROR_AIRPORT_ID);
+
+    const static double TOL = pow(10, -5);
 }

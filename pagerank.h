@@ -19,7 +19,7 @@ class Pagerank {
          * @param g the pointer to graph
          * @param loadType load label with 0, load weight with 1
          */
-        Pagerank(Graph* g, bool loadType);
+        Pagerank(const Graph* g, bool loadType);
 
         /**
          * Return the matrix used for PageRank
@@ -41,7 +41,7 @@ class Pagerank {
         void _loadWeightRank();
 
         /** Graph used when generating matrix */
-        Graph* _graph;
+        const Graph* _graph;
 
         /** Generated matrix */
         Matrix* _graphMat;
