@@ -5,6 +5,7 @@
 
 using std::vector;
 using std::string;
+using std::to_string;
 
 namespace utils {
     /**
@@ -24,4 +25,7 @@ namespace utils {
      * @returns distance between these two points
      */
     double getDistance(double latitude1, double longtitude1, double latitude2, double longtitude2);
+
+    const static int ERROR_AIRPORT_ID = -pow(2,30);
+    const static string STR_ERROR_AIRPORT_ID = to_string(ERROR_AIRPORT_ID);
 }

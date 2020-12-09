@@ -6,6 +6,8 @@
 #include "planes.h"
 #include "airlineFlow.h"
 #include "cs225/graph.h"
+#include <algorithm>
+#include <fstream>
 
 using std::cout;
 using std::endl;
@@ -13,7 +15,12 @@ using std::endl;
 int main() {
 
     AirlineFlow airlineFlow(false);
-    vector<int> res = airlineFlow.getAirlineBetweenAirports(4355, 3876);
-    for (int i : res) cout << i << endl;
+    vector<Vertex> res = airlineFlow.dfs();
+    std::sort(res.begin(), res.end(), [](auto &left, auto &right) {
+        return std::stoi(left) < std::stoi(right);
+    });
+    // for (Vertex i : res) cout << i << endl;
+    cout << "SIZE:\t" << res.size() << endl;
     return 0;
+    
 }
