@@ -9,6 +9,7 @@
 #include "airlineFlow.h"
 #include "cs225/graph.h"
 #include "Dijkstra.h"
+#include "pagerank.cpp"
 
 using std::cout;
 using std::endl;
@@ -39,8 +40,11 @@ int main() {
     for (string i : res2) {
         cout << i << endl;
     }
+  
+    //test page rank
+    Graph* g = airlineFlow.getRouteGraph();
+    Pagerank pagerank1(g, true);
 
-    
     return 0;
     
 }

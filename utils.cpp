@@ -73,6 +73,19 @@ namespace utils {
         _value = value;
     }
     
+    bool operator!=(const Matrix& lhs, const Matrix& rhs) {
+        return !(lhs == rhs);
+    }
+    
+    bool operator==(const Matrix& lhs, const Matrix& rhs) {
+        if (lhs.shape() != rhs.shape()) return false;
+        for (int i = 0; i < lhs.numRows(); i++)
+            for (int j = 0; j < lhs.numCols(); j++)
+                if (abs(lhs.getEntry(i, j) - rhs.getEntry(i, j)) > TOL)
+                    return false;
+        return true;
+    }
+    
     void Matrix::printMatrix() {
         for (int i = 0; i < _nRows; i++) {
             for (int j = 0; j < _nCols; j++) {
@@ -82,12 +95,12 @@ namespace utils {
         }
     }
 
-    void Matrix::setEntry(int r, int c, double entry) {
-        _value[r][c] = entry;
+    double Matrix::getEntry(int r, int c) const {
+        return _value[r][c];
     }
 
-    double Matrix::getEntry(int r, int c) {
-        return _value[r][c];
+    void Matrix::setEntry(int r, int c, double entry) {
+        _value[r][c] = entry;
     }
 
     Matrix* matrixMul(Matrix* mat1, Matrix* mat2) {
