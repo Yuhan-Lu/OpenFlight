@@ -43,7 +43,13 @@ int main() {
   
     //test page rank
     Graph* g = airlineFlow.getRouteGraph();
-    Pagerank pagerank1(g, true);
+    Pagerank pagerank1(g, false);
+    Matrix* mat = pagerank1.returnMatrix();
+    for (int i = 0; i < mat->numRows(); i++) {
+        for (int j = 0; j < mat->numCols(); j++) {
+            cout << mat->getEntry(i, j) << endl;
+        }
+    }
 
     return 0;
     
