@@ -64,7 +64,7 @@ AirlineFlow::AirlineFlow(bool test) : _airlines(new Airlines(test)), _airports(n
     // _d.printStatusReport();
     // remove inactive airports
     vector<Vertex> vList = _routeGraph->getVertices();
-    cout << vList.size() << endl;
+    //cout << vList.size() << endl;
 }
 
 AirlineFlow::~AirlineFlow() {

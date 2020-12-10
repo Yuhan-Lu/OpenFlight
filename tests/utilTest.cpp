@@ -6,6 +6,8 @@
 #include "../routes.h"
 #include "../utils.h"
 #include "../pagerank.h"
+#include "../airlineFlow.h"
+#include "../Dijkstra.h"
 #include <iostream>
 #include <map>
 #include <vector>
@@ -132,3 +134,11 @@ TEST_CASE("check matrix multiplication Larger", "[valgrind][weight=1]") {
   REQUIRE(res[3][2] == -12);
   REQUIRE(res[3][3] == 0);
 }
+
+// TEST_CASE("check simple shortest path", "[valgrind][weight=1]") {
+//   AirlineFlow airlineFlow(true);
+//   vector<int> res2 = shortest_path(airlineFlow.getRouteGraph(), 2965, 2922);
+//   for (int i : res2) {
+//       cout << i << endl;
+//   }
+// }
