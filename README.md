@@ -30,7 +30,7 @@ make test
 You can also design your own airlines in "main.cpp" file. 
 Run
 ```cpp
-make test
+make
 ```
 ```cpp
 ./main
