@@ -24,6 +24,13 @@ namespace utils {
             Matrix(int r, int c, bool initialize = true);
 
             /** 
+             * Constructs empty matrix
+             * @param shape shape of the matrix
+             * @param initialize whether the matrix need to be initialized as 0
+             */
+            Matrix(pair<int, int> shape, bool initialize = true);
+
+            /** 
              * Constructs matrix using double pointer
              * @param r number of rows of the matrix
              * @param c number of cols of the matrix
@@ -113,6 +120,17 @@ namespace utils {
      */
     Matrix* matrixMul(Matrix* mat1, Matrix* mat2);
 
+    /**
+     * 2-norm of given vector
+     * @param mat the vector given
+     */
+    double norm(const Matrix* mat);
+
+    /**
+     * normalize given vector using 2-nrom
+     * @param mat the vector given
+     */
+    Matrix* normalize(const Matrix* mat);
     
     /** 
      * Returns of two matrixs are the same

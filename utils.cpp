@@ -67,6 +67,20 @@ namespace utils {
         }
     }
 
+    Matrix::Matrix(pair<int, int> shape, bool initialize) {
+        _nRows = shape.first;
+        _nCols = shape.second;
+        _value = new double*[_nRows];
+        for (int i = 0; i < _nRows; i++) {
+            _value[i] = new double[_nCols];
+            if (initialize) {
+                for (int j = 0; j < _nCols; j++) {
+                    _value[i][j] = 0;
+                }
+            }
+        }
+    }
+
     Matrix::Matrix(int rows, int cols, double** value) {
         _nRows = rows;
         _nCols = cols;
@@ -119,5 +133,25 @@ namespace utils {
             }
         }
         return toReturn;
+    }
+    
+    double norm(const Matrix* mat) {
+        assert(mat->numRows() == 1);
+        double sum = 0;
+        for (int i = 0; i < mat->numRows(); i++) {
+            sum += mat->getEntry(i, 0);
+        }
+        return sum;
+    }
+
+    Matrix* normalize(const Matrix* mat) {
+        assert(mat->numRows() == 1);
+        double n = norm(mat);
+        assert(n != 0);
+        Matrix* res = new Matrix(mat->shape(), false);
+        for (int i = 0; i < mat->numRows(); i++) {
+            res->setEntry(i, 0, res->getEntry(i, 0) / n);
+        }
+        return res;
     }
 }
