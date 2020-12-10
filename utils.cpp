@@ -1,11 +1,12 @@
 #include "utils.h"
 #include <algorithm>
 #include <iostream>
+#include <random>
 #include <assert.h>
 
 using std::cout;
 using std::stringstream;
-using std::remove;
+using std::default_random_engine;
 
 namespace utils {
     vector<string> readEntry(string &s) {
@@ -53,6 +54,19 @@ namespace utils {
         return 2 * asin(sqrt(part1)) * 6371;
     }
 
+    Matrix* Matrix::initialVector(int r) {
+        double** arr = new double*[r];
+        default_random_engine rng(time(nullptr));
+        for (int i = 0; i < r; i++) {
+            arr[i] = new double[1];
+            arr[i][0] = rng();
+        }
+        Matrix* res = new Matrix(r, 1, arr);
+        Matrix* normalized = res->normalize();
+        delete res;
+        return normalized;
+    }
+
     Matrix::Matrix(int r, int c, bool initialize) {
         _nRows = r;
         _nCols = c;
@@ -85,6 +99,10 @@ namespace utils {
         _nRows = rows;
         _nCols = cols;
         _value = value;
+    }
+    
+    Matrix::~Matrix() {
+        delete[] _value;
     }
     
     bool operator!=(const Matrix& lhs, const Matrix& rhs) {
@@ -132,7 +150,7 @@ namespace utils {
         assert(n != 0);
         Matrix* res = new Matrix(this->shape(), false);
         for (int r = 0; r < _nRows; r++) {
-            res->setEntry(r, 0, res->getEntry(r, 0) / n);
+            res->setEntry(r, 0, _value[r][0] / n);
         }
         return res;
     }

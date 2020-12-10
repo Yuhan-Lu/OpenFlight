@@ -15,6 +15,8 @@ namespace utils {
     
     class Matrix {
         public:
+            static Matrix* initialVector(int r);
+
             /** 
              * Constructs empty matrix
              * @param r number of rows of the matrix
@@ -37,6 +39,11 @@ namespace utils {
              * @param value the double pointer that discribes the matrix
              */
             Matrix(int r, int c, double** value);
+
+            /** 
+             * Destructor
+             */
+            ~Matrix();
 
             /** 
              * Get the number of rows the matrix has
@@ -102,7 +109,8 @@ namespace utils {
             /** number of cols */
             int _nCols;
 
-            double ** _value;
+            /** internal storage of data */
+            double** _value;
     };
 
     /**
