@@ -84,7 +84,7 @@ namespace utils {
              * @returns the value of the entry
              */
             double getEntry(int r, int c) const;
-            
+
             /**
              * 2-norm of the vector
              * REQUIRES NUM_COLS == 1
@@ -136,7 +136,6 @@ namespace utils {
      * @returns distance between these two points
      */
     double getDistance(double latitude1, double longtitude1, double latitude2, double longtitude2);
-
     
     /**
      * Matrix multiplication
@@ -145,6 +144,22 @@ namespace utils {
      * @returns result of multiplication
      */
     Matrix* matrixMul(Matrix* mat1, Matrix* mat2);
+
+    /**
+     * Matrix addition
+     * @param mat1 first matrix
+     * @param mat2 second matrix
+     * @returns result of multiplication
+     */
+    Matrix* matrixAdd(Matrix* mat1, Matrix* mat2);
+
+    /**
+     * Matrix subtraction
+     * @param mat1 first matrix
+     * @param mat2 second matrix
+     * @returns result of multiplication
+     */
+    Matrix* matrixSub(Matrix* mat1, Matrix* mat2);
     
     /** 
      * Returns of two matrixs are the same

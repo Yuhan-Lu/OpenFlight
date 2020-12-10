@@ -118,12 +118,12 @@ namespace utils {
         return true;
     }
 
-    double Matrix::getEntry(int r, int c) const {
-        return _value[r][c];
-    }
-
     void Matrix::setEntry(int r, int c, double entry) {
         _value[r][c] = entry;
+    }
+
+    double Matrix::getEntry(int r, int c) const {
+        return _value[r][c];
     }
 
     double Matrix::norm() {
@@ -159,6 +159,32 @@ namespace utils {
                     sum += mat1->getEntry(i, k) * mat2->getEntry(k, j);
                 }
                 toReturn->setEntry(i, j, sum);
+            }
+        }
+        return toReturn;
+    }
+
+    Matrix* matrixAdd(Matrix* mat1, Matrix* mat2) {
+        assert(mat1->shape() == mat2->shape());
+        int r = mat1->numRows();
+        int c = mat1->numCols();
+        Matrix* toReturn = new Matrix(r, c, false);
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                toReturn->setEntry(i, j, mat1->getEntry(i, j) + mat2->getEntry(i, j));
+            }
+        }
+        return toReturn;
+    }
+    
+    Matrix* matrixSub(Matrix* mat1, Matrix* mat2) {
+        assert(mat1->shape() == mat2->shape());
+        int r = mat1->numRows();
+        int c = mat1->numCols();
+        Matrix* toReturn = new Matrix(r, c, false);
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                toReturn->setEntry(i, j, mat1->getEntry(i, j) - mat2->getEntry(i, j));
             }
         }
         return toReturn;
