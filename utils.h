@@ -97,6 +97,12 @@ namespace utils {
              */
             Matrix* normalize();
 
+            /**
+             * Convert the matrix to a dmaped matrix using coefficient
+             * @param dampingCoeff damping coefficent
+             */
+            void convertToDampingMatrix(double dampingCoeff);
+
             /** 
              * Prints the matrix
              */

@@ -117,15 +117,6 @@ namespace utils {
                     return false;
         return true;
     }
-    
-    void Matrix::printMatrix() {
-        for (int i = 0; i < _nRows; i++) {
-            for (int j = 0; j < _nCols; j++) {
-                cout << _value[i][j] << "\t";
-            }
-            cout << endl;
-        }
-    }
 
     double Matrix::getEntry(int r, int c) const {
         return _value[r][c];
@@ -171,5 +162,25 @@ namespace utils {
             }
         }
         return toReturn;
+    }
+    
+    void Matrix::convertToDampingMatrix(double dampingCoeff) {
+        assert(_nRows == _nCols);
+        int n = _nRows;
+        double c = (1 - dampingCoeff) / n;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                _value[i][j] = _value[i][j] * dampingCoeff + c;
+            }
+        }
+    }
+    
+    void Matrix::printMatrix() {
+        for (int i = 0; i < _nRows; i++) {
+            for (int j = 0; j < _nCols; j++) {
+                cout << _value[i][j] << "\t";
+            }
+            cout << endl;
+        }
     }
 }
