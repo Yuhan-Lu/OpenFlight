@@ -13,7 +13,6 @@ vector<string> shortest_path(Graph* G, int source, int dest, bool test) {
     vector<int> pq; // the priority queue
     vector<int> path; // the vector used to store the airportIDs along the shortest path
     vector<string> path_s; //the vector used to store the airport names along the shortest path
-    int totaldist = 0;
     int INF = numeric_limits<int>::max();
     auto comparator = [&] (int first, int sec) { return dist[first] > dist[sec]; };
 
@@ -41,7 +40,6 @@ vector<string> shortest_path(Graph* G, int source, int dest, bool test) {
         // once we reach the dest, push all the values to path
         if (min == dest) {
             while(previous.find(min) != previous.end()) {
-                totaldist += dist[min];
                 path.push_back(min);
                 min = previous[min];
             }
@@ -80,7 +78,7 @@ vector<string> shortest_path(Graph* G, int source, int dest, bool test) {
     }
 
     delete airports;
-    cout << "The shortest path distance is " << totaldist  << " kilometers."<< endl;
+    cout << "The shortest path distance is " << dist[dest]  << " kilometers."<< endl;
     return path_s;
 
 }
