@@ -15,18 +15,32 @@ using std::endl;
 
 int main() {
 
-    AirlineFlow airlineFlow(false);
-    // vector<Vertex> res1 = airlineFlow.dfs();
-    // std::sort(res1.begin(), res1.end(), [](auto &left, auto &right) {
-    //     return std::stoi(left) < std::stoi(right);
-    // });
-    // // for (Vertex i : res1) cout << i << endl;
-    // cout << "SIZE:\t" << res1.size() << endl;
-    cout << airlineFlow.getRouteGraph()->getEdgeWeight(to_string(3370), to_string(3830)) << endl;
-    vector<string> res2 = shortest_path(airlineFlow.getRouteGraph(), 3370, 3830, false);
+    AirlineFlow airlineFlow(true); // load graphs, true for test routes, false for actual routes
+
+    //test getEdgeWeight
+    cout << airlineFlow.getRouteGraph()->getEdgeWeight(to_string(2948), to_string(2990)) << endl;
+
+    //test getAirline
+    vector<int> airlines = airlineFlow.getAirlineBetweenAirports("AER", "KZN");
+    for (int i : airlines) {
+        cout << i << endl;
+    }
+
+    //test bfs
+    vector<Vertex> res1 = airlineFlow.bfs();
+    std::sort(res1.begin(), res1.end(), [](auto &left, auto &right) {
+        return std::stoi(left) < std::stoi(right);
+    });
+    for (Vertex i : res1) cout << i << endl;
+    cout << "SIZE:\t" << res1.size() << endl;
+
+    //test shortest_path
+    vector<string> res2 = shortest_path(airlineFlow.getRouteGraph(), 2965, 2922, false);
     for (string i : res2) {
         cout << i << endl;
     }
+
+    
     return 0;
     
 }

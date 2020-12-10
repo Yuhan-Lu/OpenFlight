@@ -59,8 +59,8 @@ vector<string> shortest_path(Graph* G, int source, int dest, bool test) {
             if (!visited[stoi(neighbour)] && G->edgeExists(m, neighbour)
                  && dist[min] + cost < dist[stoi(neighbour)]) {
                 //update neighbour's distances
-                previous[stoi(neighbour)] = min;
                 dist[stoi(neighbour)] = dist[min] + cost;
+                previous[stoi(neighbour)] = min;
                 make_heap(pq.begin(), pq.end(), comparator);
             }
         }
