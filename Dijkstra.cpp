@@ -80,7 +80,7 @@ vector<string> shortest_path(Graph* G, int source, int dest, bool test) {
     }
 
     delete airports;
-    cout << "total dist is " << totaldist << endl;
+    cout << "The shortest path distance is " << totaldist  << " kilometers."<< endl;
     return path_s;
 
 }
