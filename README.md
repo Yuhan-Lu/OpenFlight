@@ -12,13 +12,13 @@ Our data is from dataset inside OpenFlights. You can open the link [here](https:
 
 Example entry here: 507, "London Heathrow Airport", "London", "United Kingdom", "EGLL", 51.4706, -0.461941, 83, 0, "E", "Europe/London", "airport", "OurAirports"
 
-We also include those data to "data" file, so you don't need to download from other sources.
+We also include those data to under the "data" folder, so you don't need to download from other sources. Besides, for the sake of testing, we have some smaller test data under the "testData" folder.
 
 ## Installation
 No installation needed.
 
 ## Test
-We include our tests in "tests" file, and there are four tests "dsetTest.cpp", "loadTest.cpp", "pagerankTest.cpp", and utilTest.cpp".
+We include our tests in "tests" folder, and there are four tests "dsetTest.cpp", "loadTest.cpp", "pagerankTest.cpp", and utilTest.cpp". They test for disjoint sets, data loading, Page rank, and some utility functions and algorithm testing (Dijkstra and BFS/DFS).
 Please run "make test" to see the outcome.
 ```cpp
 make test
@@ -28,7 +28,7 @@ make test
 ```
 
 ## Usage
-We include some of our fundamental functions in main.cpp for testing and
+We include some of our fundamental functions in "main.cpp" for testing and
 displaying results. 
 Run
 ```cpp
@@ -37,7 +37,7 @@ make
 ```cpp
 ./main
 ```
-For more information about a specific function, please refer to the function documentations in each file.
+For more information about a specific function, please refer to the function documentations in each file. In "utils.cpp", we provided some of the utility functions required for reading files and algorithm implementation. "Airlines.cpp", "airports.cpp", "planes.cpp", and "routes.cpp" are for data loading; in "airlineFlow.cpp", we converted all these data into a graph. Our BFS and DFS traversals are also included in "airlineFlow.cpp". Dijkstra's algorithm and Pagerank are implemented in "Dijkstra.cpp" and "pagerank.cpp" respectively. We also implemented disjoint sets in "dset.hpp" for further insight into graph traversal.
 
 ## Contribution
-We are using graph files, PNG files, and make files from cs225 class. Thanks for cs225's contribution.
+We used graph files, PNG files, and make files from cs225 class. Thanks for cs225's contribution.
