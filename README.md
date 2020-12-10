@@ -12,11 +12,13 @@ Our data is from dataset inside OpenFlights. You can open the link [here](https:
 
 Example entry here: 507, "London Heathrow Airport", "London", "United Kingdom", "EGLL", 51.4706, -0.461941, 83, 0, "E", "Europe/London", "airport", "OurAirports"
 
+We also include those data to "data" file, so you don't need to download from other sources.
+
 ## Installation
 No installation needed.
 
 ## Test
-We include our tests in "tests" file, and there are many tests in different "tests.cpp"
+We include our tests in "tests" file, and there are four tests "dsetTest.cpp", "loadTest.cpp", "pagerankTest.cpp", and utilTest.cpp".
 Please run "make test" to see the outcome.
 ```cpp
 make test
