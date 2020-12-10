@@ -15,7 +15,7 @@
 using namespace std;
 using namespace utils;
 
-bool doubleEqual(double d1, double d2) {
+bool longDoubleEqual(long double d1, long double d2) {
   return abs(d1 - d2) < TOL;
 }
 
@@ -77,23 +77,68 @@ TEST_CASE("check dfs and bfs on test routes", "[valgrind][weight=1]") {
 
 }
 
-
-TEST_CASE("check matrix multiplication", "[valgrind][weight=1]") {
+TEST_CASE("check matrix subtraction", "[valgrind][weight=1]") {
   //{ {2, -1}, {-1, 1}};
-  double** value1;
-  value1 = new double*[2];
+  long double** value1;
+  value1 = new long double*[2];
   for (int i = 0; i < 2; i++) {
-    value1[i] = new double[2];
+    value1[i] = new long double[2];
   }
   value1[0][0] = 2.0;
   value1[0][1] = -1.0;
   value1[1][0] = -1.0;
   value1[1][1] = 1.0;
+
   //{ {1, 3}, {1, 1}};
-  double** value2;
-  value2 = new double*[2];
+  long double** value2;
+  value2 = new long double*[2];
   for (int i = 0; i < 2; i++) {
-    value2[i] = new double[2];
+    value2[i] = new long double[2];
+  }
+  value2[0][0] = 1.0;
+  value2[0][1] = 3.0;
+  value2[1][0] = 1.0;
+  value2[1][1] = 1.0;
+  
+  //{ {1, -4}, {-2, 0}};
+  long double** ans;
+  ans = new long double*[2];
+  for (int i = 0; i < 2; i++) {
+    ans[i] = new long double[2];
+  }
+  ans[0][0] = 1;
+  ans[0][1] = -4;
+  ans[1][0] = -2;
+  ans[1][1] = 0;
+  
+  Matrix* mat1 = new Matrix(2, 2, value1);
+  Matrix* mat2 = new Matrix(2, 2, value2);
+  Matrix* matAns = new Matrix(2, 2, ans);
+  
+  REQUIRE(*matrixSub(mat1, mat2) == *matAns);
+
+  delete mat1;
+  delete mat2;
+  delete matAns;
+}
+
+TEST_CASE("check matrix multiplication", "[valgrind][weight=1]") {
+  //{ {2, -1}, {-1, 1}};
+  long double** value1;
+  value1 = new long double*[2];
+  for (int i = 0; i < 2; i++) {
+    value1[i] = new long double[2];
+  }
+  value1[0][0] = 2.0;
+  value1[0][1] = -1.0;
+  value1[1][0] = -1.0;
+  value1[1][1] = 1.0;
+
+  //{ {1, 3}, {1, 1}};
+  long double** value2;
+  value2 = new long double*[2];
+  for (int i = 0; i < 2; i++) {
+    value2[i] = new long double[2];
   }
   value2[0][0] = 1.0;
   value2[0][1] = 3.0;
@@ -101,10 +146,10 @@ TEST_CASE("check matrix multiplication", "[valgrind][weight=1]") {
   value2[1][1] = 1.0;
   
   //{ {1, 5}, {0, -2}};
-  double** ans;
-  ans = new double*[2];
+  long double** ans;
+  ans = new long double*[2];
   for (int i = 0; i < 2; i++) {
-    ans[i] = new double[2];
+    ans[i] = new long double[2];
   }
   ans[0][0] = 1;
   ans[0][1] = 5;
@@ -128,14 +173,10 @@ TEST_CASE("check matrix multiplication Larger", "[valgrind][weight=1]") {
 //              [1, 2, -3, -4],
 //              [1, 2, -3, 4],
 //              [1, 2, -3, 4]])
-// B = np.array([[1, 2, -3, 4], 
-//              [1, 2, -3, -4],
-//              [1, 2, -3, 4],
-//              [1, 2, -3, 4]])
-  double** value1;
-  value1 = new double*[4];
+  long double** value1;
+  value1 = new long double*[4];
   for (int i = 0; i < 4; i++) {
-    value1[i] = new double[4];
+    value1[i] = new long double[4];
   }
   value1[0][0] = 1;
   value1[0][1] = 2;
@@ -154,10 +195,14 @@ TEST_CASE("check matrix multiplication Larger", "[valgrind][weight=1]") {
   value1[3][2] = -3;
   value1[3][3] = 4;
 
-  double** value2;
-  value2 = new double*[4];
+// B = np.array([[1, 2, -3, 4], 
+//              [1, 2, -3, -4],
+//              [1, 2, -3, 4],
+//              [1, 2, -3, 4]])
+  long double** value2;
+  value2 = new long double*[4];
   for (int i = 0; i < 4; i++) {
-    value2[i] = new double[4];
+    value2[i] = new long double[4];
   }
   value2[0][0] = 1;
   value2[0][1] = 2;
@@ -180,10 +225,10 @@ TEST_CASE("check matrix multiplication Larger", "[valgrind][weight=1]") {
 //             [ -4,  -8,  12, -32],
 //             [  4,   8, -12,   0],
 //             [  4,   8, -12,   0]])
-  double** ans;
-  ans = new double*[4];
+  long double** ans;
+  ans = new long double*[4];
   for (int i = 0; i < 4; i++) {
-    ans[i] = new double[4];
+    ans[i] = new long double[4];
   }
   ans[0][0] = 4;
   ans[0][1] = 8;
@@ -216,10 +261,10 @@ TEST_CASE("check matrix multiplication Larger", "[valgrind][weight=1]") {
 TEST_CASE("norm", "norm") {
 // A = np.array([0.83693831, 0.31719906, 0.51235507, 0.07216965, 0.32061431,
 //        0.85697327, 0.17513264, 0.49080132, 0.30565907, 0.22081496])
-  double** vec;
-  vec = new double*[10];
+  long double** vec;
+  vec = new long double*[10];
   for (int i = 0; i < 10; i++) {
-    vec[i] = new double[1];
+    vec[i] = new long double[1];
   }
   vec[0][0] = 0.836938;
   vec[1][0] = 0.317199;
@@ -233,7 +278,7 @@ TEST_CASE("norm", "norm") {
   vec[9][0] = 0.220815;
   
   Matrix* mat = new Matrix(10, 1, vec);
-  REQUIRE(doubleEqual(mat->norm(), 1.5230686001829294));
+  REQUIRE(longDoubleEqual(mat->norm(), 1.5230686001829294));
   
   delete mat;
 }
@@ -241,10 +286,10 @@ TEST_CASE("norm", "norm") {
 TEST_CASE("normalize", "norm") {
 // A = np.array([0.83693831, 0.31719906, 0.51235507, 0.07216965, 0.32061431,
 //        0.85697327, 0.17513264, 0.49080132, 0.30565907, 0.22081496])
-  double** vec;
-  vec = new double*[10];
+  long double** vec;
+  vec = new long double*[10];
   for (int i = 0; i < 10; i++) {
-    vec[i] = new double[1];
+    vec[i] = new long double[1];
   }
   vec[0][0] = 0.836938;
   vec[1][0] = 0.317199;
@@ -260,10 +305,10 @@ TEST_CASE("normalize", "norm") {
   Matrix* mat1 = new Matrix(10, 1, vec);
 // A_norm = array([0.54950796, 0.20826314, 0.33639658, 0.04738437, 0.2105055 ,
 //        0.56266229, 0.1149867 , 0.32224505, 0.20068634, 0.14498031])
-  double** res;
-  res = new double*[10];
+  long double** res;
+  res = new long double*[10];
   for (int i = 0; i < 10; i++) {
-    res[i] = new double[1];
+    res[i] = new long double[1];
   }
   res[0][0] = 0.549508;
   res[1][0] = 0.208263;
@@ -287,7 +332,7 @@ TEST_CASE("normalize", "norm") {
 
 TEST_CASE("initializeVector", "norm") {
   Matrix* mat = Matrix::initialVector(10);
-  REQUIRE(doubleEqual(mat->norm(), 1));
+  REQUIRE(longDoubleEqual(mat->norm(), 1));
   delete mat;
 }
 

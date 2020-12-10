@@ -38,7 +38,7 @@ namespace utils {
              * @param c number of cols of the matrix
              * @param value the double pointer that discribes the matrix
              */
-            Matrix(int r, int c, double** value);
+            Matrix(int r, int c, long double** value);
 
             /** 
              * Destructor
@@ -75,7 +75,7 @@ namespace utils {
              * @param c column of the entry
              * @param entry the new value of the entry
              */
-            void setEntry(int r, int c, double entry);
+            void setEntry(int r, int c, long double entry);
 
             /** 
              * Get the entry of current matrix at row r, column c
@@ -83,16 +83,16 @@ namespace utils {
              * @param c column of the entry
              * @returns the value of the entry
              */
-            double getEntry(int r, int c) const;
+            long double getEntry(int r, int c) const;
 
             /**
              * 2-norm of the vector
              * REQUIRES NUM_COLS == 1
              */
-            double norm();
+            long double norm();
 
             /**
-             * Normalize given vector using 2-nrom
+             * Normalize given vector using 2-norm
              * REQUIRES NUM_COLS == 1
              */
             Matrix* normalize();
@@ -116,7 +116,7 @@ namespace utils {
             int _nCols;
 
             /** internal storage of data */
-            double** _value;
+            long double** _value;
     };
 
     /**
@@ -177,5 +177,5 @@ namespace utils {
     const static int ERROR_AIRPORT_ID = -pow(2,30);
     const static string STR_ERROR_AIRPORT_ID = to_string(ERROR_AIRPORT_ID);
 
-    const static double TOL = pow(10, -6);
+    const static long double TOL = powl(10, -6);
 }

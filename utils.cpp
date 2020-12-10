@@ -3,6 +3,7 @@
 #include <iostream>
 #include <random>
 #include <assert.h>
+#include <math.h>
 
 using std::cout;
 using std::stringstream;
@@ -55,10 +56,10 @@ namespace utils {
     }
 
     Matrix* Matrix::initialVector(int r) {
-        double** arr = new double*[r];
+        long double** arr = new long double*[r];
         default_random_engine rng(time(nullptr));
         for (int i = 0; i < r; i++) {
-            arr[i] = new double[1];
+            arr[i] = new long double[1];
             arr[i][0] = rng();
         }
         Matrix* res = new Matrix(r, 1, arr);
@@ -70,9 +71,9 @@ namespace utils {
     Matrix::Matrix(int r, int c, bool initialize) {
         _nRows = r;
         _nCols = c;
-        _value = new double*[_nRows];
+        _value = new long double*[_nRows];
         for (int i = 0; i < _nRows; i++) {
-            _value[i] = new double[_nCols];
+            _value[i] = new long double[_nCols];
             if (initialize) {
                 for (int j = 0; j < _nCols; j++) {
                     _value[i][j] = 0;
@@ -84,9 +85,9 @@ namespace utils {
     Matrix::Matrix(pair<int, int> shape, bool initialize) {
         _nRows = shape.first;
         _nCols = shape.second;
-        _value = new double*[_nRows];
+        _value = new long double*[_nRows];
         for (int i = 0; i < _nRows; i++) {
-            _value[i] = new double[_nCols];
+            _value[i] = new long double[_nCols];
             if (initialize) {
                 for (int j = 0; j < _nCols; j++) {
                     _value[i][j] = 0;
@@ -95,7 +96,7 @@ namespace utils {
         }
     }
 
-    Matrix::Matrix(int rows, int cols, double** value) {
+    Matrix::Matrix(int rows, int cols, long double** value) {
         _nRows = rows;
         _nCols = cols;
         _value = value;
@@ -118,26 +119,26 @@ namespace utils {
         return true;
     }
 
-    void Matrix::setEntry(int r, int c, double entry) {
+    void Matrix::setEntry(int r, int c, long double entry) {
         _value[r][c] = entry;
     }
 
-    double Matrix::getEntry(int r, int c) const {
+    long double Matrix::getEntry(int r, int c) const {
         return _value[r][c];
     }
 
-    double Matrix::norm() {
+    long double Matrix::norm() {
         assert(_nCols == 1);
-        double sum = 0;
+        long double sum = 0;
         for (int r = 0; r < _nRows; r++) {
-            sum += pow(_value[r][0], 2);
+            sum += powl(_value[r][0], 2);
         }
-        return pow(sum, 0.5);
+        return powl(sum, 0.5);
     }
 
     Matrix* Matrix::normalize() {
         assert(_nCols == 1);
-        double n = this->norm();
+        long double n = this->norm();
         assert(n != 0);
         Matrix* res = new Matrix(this->shape(), false);
         for (int r = 0; r < _nRows; r++) {
@@ -154,7 +155,7 @@ namespace utils {
         Matrix* toReturn = new Matrix(mat1Row, mat2Col, false);
         for (int i = 0; i < mat1Row; i++) {
             for (int j = 0; j < mat2Col; j++) {
-                double sum = 0;
+                long double sum = 0;
                 for (int k = 0; k < mat1Col; k ++) {
                     sum += mat1->getEntry(i, k) * mat2->getEntry(k, j);
                 }
@@ -193,7 +194,7 @@ namespace utils {
     void Matrix::convertToDampingMatrix(double dampingCoeff) {
         assert(_nRows == _nCols);
         int n = _nRows;
-        double c = (1 - dampingCoeff) / n;
+        long double c = (1 - dampingCoeff) / n;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 _value[i][j] = _value[i][j] * dampingCoeff + c;
