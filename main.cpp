@@ -19,19 +19,21 @@ int main() {
     AirlineFlow airlineFlow(true); // load graphs, true for test routes, false for actual routes
 
     //test getEdgeWeight
-    cout << airlineFlow.getRouteGraph()->getEdgeWeight(to_string(2948), to_string(2990)) << endl;
+    cout << airlineFlow.getRouteGraph()->getEdgeWeight(to_string(2965), to_string(2990)) << " km."  << endl;
 
     //test getAirline
     vector<int> airlines = airlineFlow.getAirlineBetweenAirports("AER", "KZN");
+    cout << "airlines between the two airports:" << endl;
     for (int i : airlines) {
-        cout << i << endl;
+        cout << "airline No." << i << endl;
     }
 
-    // //test bfs
+    //test bfs
     vector<Vertex> res1 = airlineFlow.bfs();
     std::sort(res1.begin(), res1.end(), [](auto &left, auto &right) {
         return std::stoi(left) < std::stoi(right);
     });
+    cout << "bfs traversal route:" << endl;
     for (Vertex i : res1) cout << i << endl;
     cout << "SIZE:\t" << res1.size() << endl;
 
