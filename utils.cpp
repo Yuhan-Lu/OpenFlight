@@ -117,6 +117,26 @@ namespace utils {
         _value[r][c] = entry;
     }
 
+    double Matrix::norm() {
+        assert(_nCols == 1);
+        double sum = 0;
+        for (int r = 0; r < _nRows; r++) {
+            sum += pow(_value[r][0], 2);
+        }
+        return pow(sum, 0.5);
+    }
+
+    Matrix* Matrix::normalize() {
+        assert(_nCols == 1);
+        double n = this->norm();
+        assert(n != 0);
+        Matrix* res = new Matrix(this->shape(), false);
+        for (int r = 0; r < _nRows; r++) {
+            res->setEntry(r, 0, res->getEntry(r, 0) / n);
+        }
+        return res;
+    }
+
     Matrix* matrixMul(Matrix* mat1, Matrix* mat2) {
         assert(mat1->numCols() == mat2->numRows());
         int mat1Row = mat1->numRows();
@@ -133,25 +153,5 @@ namespace utils {
             }
         }
         return toReturn;
-    }
-    
-    double norm(const Matrix* mat) {
-        assert(mat->numRows() == 1);
-        double sum = 0;
-        for (int i = 0; i < mat->numRows(); i++) {
-            sum += mat->getEntry(i, 0);
-        }
-        return sum;
-    }
-
-    Matrix* normalize(const Matrix* mat) {
-        assert(mat->numRows() == 1);
-        double n = norm(mat);
-        assert(n != 0);
-        Matrix* res = new Matrix(mat->shape(), false);
-        for (int i = 0; i < mat->numRows(); i++) {
-            res->setEntry(i, 0, res->getEntry(i, 0) / n);
-        }
-        return res;
     }
 }

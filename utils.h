@@ -77,6 +77,18 @@ namespace utils {
              * @returns the value of the entry
              */
             double getEntry(int r, int c) const;
+            
+            /**
+             * 2-norm of the vector
+             * REQUIRES NUM_COLS == 1
+             */
+            double norm();
+
+            /**
+             * Normalize given vector using 2-nrom
+             * REQUIRES NUM_COLS == 1
+             */
+            Matrix* normalize();
 
             /** 
              * Prints the matrix
@@ -119,18 +131,6 @@ namespace utils {
      * @returns result of multiplication
      */
     Matrix* matrixMul(Matrix* mat1, Matrix* mat2);
-
-    /**
-     * 2-norm of given vector
-     * @param mat the vector given
-     */
-    double norm(const Matrix* mat);
-
-    /**
-     * normalize given vector using 2-nrom
-     * @param mat the vector given
-     */
-    Matrix* normalize(const Matrix* mat);
     
     /** 
      * Returns of two matrixs are the same
@@ -148,5 +148,5 @@ namespace utils {
     const static int ERROR_AIRPORT_ID = -pow(2,30);
     const static string STR_ERROR_AIRPORT_ID = to_string(ERROR_AIRPORT_ID);
 
-    const static double TOL = pow(10, -5);
+    const static double TOL = pow(10, -6);
 }

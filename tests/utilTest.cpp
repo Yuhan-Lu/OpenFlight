@@ -15,6 +15,10 @@
 using namespace std;
 using namespace utils;
 
+bool doubleEqual(double d1, double d2) {
+  return abs(d1 - d2) < TOL;
+}
+
 TEST_CASE("check distance and route.cpp distance", "[valgrind][weight=1]") {
   Airports airports(true);
   double lati1 = airports.getAirportByID(2965)->latit;
@@ -198,6 +202,29 @@ TEST_CASE("check matrix multiplication Larger", "[valgrind][weight=1]") {
   Matrix* matAns = new Matrix(4, 4, ans);
 
   REQUIRE(*matrixMul(mat1, mat2) == *matAns);
+}
+
+TEST_CASE("norm", "norm") {
+// A = np.array([0.83693831, 0.31719906, 0.51235507, 0.07216965, 0.32061431,
+//        0.85697327, 0.17513264, 0.49080132, 0.30565907, 0.22081496])
+  double ** vec;
+  vec = new double*[10];
+  for (int i = 0; i < 10; i++) {
+    vec[i] = new double[1];
+  }
+  vec[0][0] = 0.836938;
+  vec[1][0] = 0.317199;
+  vec[2][0] = 0.512355;
+  vec[3][0] = 0.072170;
+  vec[4][0] = 0.320614;
+  vec[5][0] = 0.856973;
+  vec[6][0] = 0.175133;
+  vec[7][0] = 0.490801;
+  vec[8][0] = 0.305659;
+  vec[9][0] = 0.220815;
+  
+  Matrix* mat = new Matrix(10, 1, vec);
+  REQUIRE(doubleEqual(mat->norm(), 1.5230686001829294));
 }
 
 //see testRoutesIMG.jpg
