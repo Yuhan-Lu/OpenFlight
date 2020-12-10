@@ -15,4 +15,4 @@
  * @param dest the ID of the destination airport
  * @return a vector of int showing the airportids along the shortest path
 */
-vector<int> shortest_path(Graph* G, int source, int dest);
+vector<string> shortest_path(Graph* G, int source, int dest, bool test);
