@@ -5,6 +5,7 @@
 #include "routes.h"
 #include "cs225/graph.h"
 #include "utils.h"
+#include "airlineFlow.h"
 #include <unordered_map>
 
 using utils::Matrix;
@@ -28,7 +29,13 @@ class Pagerank {
         Matrix* returnMatrix() {
             return _graphMat;
         }
-
+        /**
+         * operate loading and generating results
+         * @param _airlineFlow airlineflow pointer to get airport
+         * @param double the alpha to set initial vector
+         */
+        void pagerankOperation(AirlineFlow* _airlineFlow, double alpha);
+        
     private:
         /**
          * Load the matrix with edge label (number of airlines that fly in this route) as the weight
@@ -42,6 +49,8 @@ class Pagerank {
 
         /** Graph used when generating matrix */
         const Graph* _graph;
+
+        //AirlineFlow _airlineFlow;
 
         /** Generated matrix */
         Matrix* _graphMat;
