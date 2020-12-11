@@ -57,15 +57,13 @@ namespace utils {
 
     Matrix* Matrix::initialVector(int r) {
         long double** arr = new long double*[r];
-        default_random_engine rng(time(nullptr));
+        // default_random_engine rng(time(nullptr));
         for (int i = 0; i < r; i++) {
             arr[i] = new long double[1];
-            arr[i][0] = rng();
+            arr[i][0] = powl(r, -1);
         }
         Matrix* res = new Matrix(r, 1, arr);
-        Matrix* normalized = res->normalize();
-        delete res;
-        return normalized;
+        return res;
     }
 
     Matrix::Matrix(int r, int c, bool initialize) {
@@ -195,17 +193,42 @@ namespace utils {
         assert(_nRows == _nCols);
         int n = _nRows;
         long double c = (1 - dampingCoeff) / n;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                _value[i][j] = _value[i][j] * dampingCoeff + c;
+        for (int j = 0; j < n; j++) {
+            long double cSum = 0;
+            for (int i = 0; i < n; i++) {
+                cSum += _value[i][j];
+            }
+            if (cSum == 0) {
+                for (int i = 0; i < n; i++) {
+                    _value[i][j] = 1 / n;
+                    _value[i][j] = _value[i][j] * dampingCoeff + c;
+                }
+            } else {
+                for (int i = 0; i < n; i++) {
+                    _value[i][j] /= cSum;
+                    _value[i][j] = _value[i][j] * dampingCoeff + c;
+                }
             }
         }
+    }
+
+    vector<long double> Matrix::toVector() {
+        vector<long double> res;
+        assert(_nRows == 1 || _nCols == 1);
+        if (_nCols == 1) {
+            for (int i = 0; i < _nRows; i++) 
+                res.push_back(_value[i][0]);
+        } else if (_nRows == 1) {
+            for (int j = 0; j < _nCols; j++) 
+                res.push_back(_value[0][j]);
+        }
+        return res;
     }
     
     void Matrix::printMatrix() {
         for (int i = 0; i < _nRows; i++) {
             for (int j = 0; j < _nCols; j++) {
-                cout << _value[i][j] << "\t";
+                printf("%.5Lf\t", _value[i][j]);
             }
             cout << endl;
         }

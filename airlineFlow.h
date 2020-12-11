@@ -59,6 +59,13 @@ class AirlineFlow {
          * @param startAirportID the ID of the starting airport
          */
         vector<Vertex> dfs(int startAirportID = -1);
+        
+        /**
+         * 
+         */
+        Airports* getAirportDataset() const {
+            return _airports;
+        }
 
 
     private:

@@ -103,6 +103,11 @@ namespace utils {
              */
             void convertToDampingMatrix(double dampingCoeff);
 
+            /**
+             * 
+             */
+            vector<long double> toVector();
+            
             /** 
              * Prints the matrix
              */
@@ -177,5 +182,5 @@ namespace utils {
     const static int ERROR_AIRPORT_ID = -pow(2,30);
     const static string STR_ERROR_AIRPORT_ID = to_string(ERROR_AIRPORT_ID);
 
-    const static long double TOL = powl(10, -6);
+    const static long double TOL = powl(10, -32);
 }
