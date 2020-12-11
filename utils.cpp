@@ -195,6 +195,22 @@ namespace utils {
         assert(_nRows == _nCols);
         int n = _nRows;
         long double c = (1 - dampingCoeff) / n;
+        for (int j = 0; j < n; j++) {
+            long double cSum = 0;
+            for (int i = 0; i < n; i++) {
+                cSum += _value[i][j];
+            }
+            if (cSum == 0) {
+                for (int i = 0; i < n; i++) {
+                    _value[i][j]  = 1 / n;
+                }
+            } else {
+                for (int i = 0; i < n; i++) {
+                    _value[i][j] /= cSum;
+                }
+
+            }
+        }
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 _value[i][j] = _value[i][j] * dampingCoeff + c;
@@ -206,6 +222,7 @@ namespace utils {
         for (int i = 0; i < _nRows; i++) {
             for (int j = 0; j < _nCols; j++) {
                 cout << _value[i][j] << "\t";
+                //printf("%.32Lf\t", _value[i][j]);
             }
             cout << endl;
         }
