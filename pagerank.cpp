@@ -12,6 +12,10 @@ Pagerank::Pagerank(const Graph *g, bool loadType) {
     vector<Vertex> tempVertex = _graph->getVertices();
     for (size_t i = 0; i < tempVertex.size(); i++) {
         _vertexToIdx[tempVertex[i]] = i;
+
+        // if(tempVertex[i] == "350") {
+        //     cout << "faffeeqwfweewfew  " <<i << endl;
+        // }
         _idxToVertex.push_back(tempVertex[i]);
     }
     if (loadType) 
