@@ -19,7 +19,7 @@ using namespace utils;
 TEST_CASE("check Pagerank with small dataset", "[valgrind][weight=1]") {
   AirlineFlow  *testalf = new AirlineFlow(true);
   Graph* g = testalf->getRouteGraph();
-  Pagerank * pagerank1 = new Pagerank(g, false);
+  Pagerank * pagerank1 = new Pagerank(*testalf, false);
   pagerank1->returnMatrix();
 
 
