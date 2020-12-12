@@ -1,10 +1,12 @@
 #include "airlineFlow.h"
 #include <queue>
 #include <stack>
+#include <sstream>
 
 using std::queue;
 using std::stack;
 using std::stoi;
+using std::stringstream;
 using utils::getDistance;
 
 AirlineFlow::AirlineFlow(bool test) : _airlines(new Airlines(test)), _airports(new Airports(test)), 
@@ -177,4 +179,29 @@ vector<Vertex> AirlineFlow::dfs(int startAirportID) {
         }
     }
     return _dfsResult;
+}
+
+
+string AirlineFlow::getAirlineBetweenAirportsReport(int sourceAirportID, int destAirportID) {
+    stringstream ss;
+    vector<int> a = getAirlineBetweenAirports(sourceAirportID, destAirportID);
+    ss << "#-------- AirlineFlow Report" << endl;
+    ss << "From: " << _airports->getAirportByID(sourceAirportID)->name << endl;
+    ss << "To:   " << _airports->getAirportByID(destAirportID)->name << endl;
+    if (a.size() != 0) {
+        ss << "There are total " << a.size() << " airlines that operates this path" << endl;
+        for (int i : a) {
+            ss << "airline No." << i << ", " << _airlines->getAirlineByID(i)->name << endl;
+        }
+    } else {
+        ss << "There is no airlines operate this path" << endl;
+    }
+    ss << "#-------- End AirlineFlow Report" << endl;
+    return ss.str();
+}
+
+string AirlineFlow::getAirlineBetweenAirportsReport(string sourceIATA, string destIATA) {
+    int sourceAirportID = _airports->getAirportIDByIATA(sourceIATA);
+    int destAirportID = _airports->getAirportIDByIATA(destIATA);
+    return getAirlineBetweenAirportsReport(sourceAirportID, destAirportID);
 }

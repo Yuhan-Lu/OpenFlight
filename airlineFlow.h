@@ -61,11 +61,38 @@ class AirlineFlow {
         vector<Vertex> dfs(int startAirportID = -1);
         
         /**
-         * 
+         * Return the airport dataset
+         * @returns airport dataset
          */
         Airports* getAirportDataset() const {
             return _airports;
         }
+
+        /**
+         * Return the airlines dataset
+         * @returns airlines dataset
+         */
+        Airlines* getAirlineDataset() const {
+            return _airlines;
+        }
+
+        /**
+         * Generate a report about airlines fly between two given airports, outputing the 
+         * airlines that operates this path
+         * @param sourceAirportID the ID of the source airport
+         * @param destAirportID the ID of the destination airport
+         * @return a report of the path
+        */
+        string getAirlineBetweenAirportsReport(int sourceAirportID, int destAirportID);
+
+        /**
+         * Generate a report about airlines fly between two given airports, outputing the 
+         * airlines that operates this path
+         * @param sourceIATA the IATA code of the source airport
+         * @param destIATA the IATA code of the destination airport
+         * @return a report of the path
+        */
+        string getAirlineBetweenAirportsReport(string sourceIATA, string destIATA);
 
 
     private:

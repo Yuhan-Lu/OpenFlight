@@ -20,26 +20,21 @@ using std::string;
 using std::vector;
 using std::pair;
 
-const string sep = "\n--------------------------------------------------------------------\n";
-
 int main() {
 
     AirlineFlow airlineFlow(false); // load graphs, true for test routes, false for actual routes
-    Airports airports = airlineFlow.getAirportDataset();
+    Airports* airports = airlineFlow.getAirportDataset();
+    Airlines* airlines = airlineFlow.getAirlineDataset();
     //AirlineFlow airlineFlow = new AirlineFlow(false);
     //test getEdgeWeight
     cout << airlineFlow.getRouteGraph()->getEdgeWeight(to_string(2965), to_string(2990)) << " km."  << endl;
 
-    cout << sep << endl;
 
     //test getAirline
-    vector<int> airlines = airlineFlow.getAirlineBetweenAirports("AER", "KZN");
-    cout << "airlines between the two airports:" << endl;
-    for (int i : airlines) {
-        cout << "airline No." << i << endl;
-    }
-    
-    cout << sep << endl;
+    vector<int> airlinesRes = airlineFlow.getAirlineBetweenAirports("AER", "KZN");
+    string airlinesReport = airlineFlow.getAirlineBetweenAirportsReport("AER", "KZN");
+    cout << airlinesReport;
+
 
     //test shortest_path
     Dijkstra dijkstra(airlineFlow);
