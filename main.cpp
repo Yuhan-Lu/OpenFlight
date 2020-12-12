@@ -46,12 +46,13 @@ int main() {
     string dijkstraReport = dijkstra.getShortestPathReport(2965, 2922);
     cout << dijkstraReport;
     
-    cout << sep << endl;
   
     //test page rank
     Graph* g = airlineFlow.getRouteGraph();
-    Pagerank* labelLoad = new Pagerank(g, false);
-    vector<pair<int, string>> pagerankRes = labelLoad->pagerankOperation(&airlineFlow, 0.85);
+    Pagerank* labelLoad = new Pagerank(airlineFlow, false);
+    vector<pair<int, string>> pagerankRes = labelLoad->pageRank(0.85);
+    string pageRankReport = labelLoad->getPageRankReport();
+    cout << pageRankReport;
 
     PathDrawer pathDrawer(airlineFlow.getAirportDataset());
     pair<int, vector<int>> path = dijkstra.shortestPath(2965, 2922);

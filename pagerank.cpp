@@ -1,21 +1,25 @@
 #include "pagerank.h"
+#include "utils.h"
 #include <algorithm>
+#include <sstream>
 
 using std::stoi;
 using std::pair;
 using std::sort;
 using std::vector;
+using std::stringstream;
 using utils::matrixSub;
 using utils::matrixMul;
+using utils::doubleEqual;
 
-Pagerank::Pagerank(const Graph *g, bool loadType) {
-    _graph = g;
+Pagerank::Pagerank(AirlineFlow& _airlineFlow, bool loadType) {
+    _graph = _airlineFlow.getRouteGraph();
+    _airportsData = _airlineFlow.getAirportDataset();
     int matSize = _graph->getVertices().size();
     _graphMat = new Matrix(matSize, matSize, true);
     vector<Vertex> tempVertex = _graph->getVertices();
     for (size_t i = 0; i < tempVertex.size(); i++) {
         _vertexToIdx[tempVertex[i]] = i;
-        _idxToVertex.push_back(tempVertex[i]);
     }
     if (loadType) 
         _loadWeightRank();
@@ -40,7 +44,10 @@ void Pagerank::_loadWeightRank() {
 
 }
 
-vector<pair<int, string>> Pagerank::pagerankOperation(AirlineFlow* _airlineFlow, double alpha) {
+vector<pair<int, string>> Pagerank::pageRank(double alpha) {
+    if (doubleEqual(alpha, _lastAlpha))
+        return _rankingResult;
+    _lastAlpha = alpha;
     Matrix* mat = returnMatrix();
     mat->convertToTransitionMatrix(alpha);
     Matrix * temp = Matrix::initialVector(mat->numRows());
@@ -60,10 +67,22 @@ vector<pair<int, string>> Pagerank::pagerankOperation(AirlineFlow* _airlineFlow,
     sort(groupedVec.begin(), groupedVec.end(), [](auto &left, auto &right) {
         return left.second > right.second;
     });
-    Airports* a = _airlineFlow->getAirportDataset();
-    vector<pair<int, string>> toReturn;
+    _rankingResult.clear();
     for (auto it = groupedVec.begin(); it != groupedVec.end(); ++it) {
-        toReturn.push_back(pair<int, string>(it->first, a->getAirportByID(it->first)->name));
+        _rankingResult.push_back(pair<int, string>(it->first, _airportsData->getAirportByID(it->first)->name));
     }
-    return toReturn;
+    return _rankingResult;
+}
+
+string Pagerank::getPageRankReport(int top) {
+    stringstream ss;
+    ss << "#-------- PageRank Report" << endl;
+    ss << "Most Popular Airports" << endl;
+    int ranking = 1;
+    for (auto it = _rankingResult.begin(); it != _rankingResult.end(); ++it) {
+        if (ranking > top) break;
+        ss << ranking++ << ".\t" << it->second << endl;
+    }
+    ss << "#-------- End PageRank Report" << endl;
+    return ss.str();
 }

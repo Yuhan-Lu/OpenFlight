@@ -242,4 +242,8 @@ namespace utils {
         }
         return result;
     }
+    
+    bool doubleEqual(double& lft, double& rgt) {
+        return abs(lft - rgt) < TOL;
+    }
 }

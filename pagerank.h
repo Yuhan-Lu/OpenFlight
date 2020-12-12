@@ -20,7 +20,7 @@ class Pagerank {
          * @param g the pointer to graph
          * @param loadType load label with 0, load weight with 1
          */
-        Pagerank(const Graph* g, bool loadType);
+        Pagerank(AirlineFlow& _airlineFlow, bool loadType);
 
         /**
          * Return the matrix used for PageRank
@@ -38,7 +38,13 @@ class Pagerank {
          * @param alpha used in inital transition matrix generation
          * @returns vector specified above
          */
-        vector<pair<int, string>> pagerankOperation(AirlineFlow* _airlineFlow, double alpha);
+        vector<pair<int, string>> pageRank(double alpha);
+
+        /**
+         * Generate a report about PageRank, outputing the most populat airports in the given airlineFlow
+         * @param top the number of most popular airports included in the report
+         */
+        string getPageRankReport(int top = 10);
         
     private:
         /**
@@ -54,6 +60,9 @@ class Pagerank {
         /** Graph used when generating matrix */
         const Graph* _graph;
 
+        /** Graph used when generating matrix */
+        Airports* _airportsData;
+
         //AirlineFlow _airlineFlow;
 
         /** Generated matrix */
@@ -62,7 +71,10 @@ class Pagerank {
         /** Mapping from vertex to its associated index in the matrix */
         unordered_map<Vertex, int> _vertexToIdx;
 
-        /** Mapping from index in the matrix to its associated vertex */
-        vector<Vertex> _idxToVertex;
+        /** PageRank result */
+        vector<pair<int, string>> _rankingResult;
+
+        /** Alpha used in last PageRank operation */
+        double _lastAlpha;
 
 };

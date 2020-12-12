@@ -1,21 +1,33 @@
 #include "Dijkstra.h"
-
+#include "util.h"
+#include "cs225/graph.h"
 #include <algorithm>
 #include <limits>
 #include <unordered_map>
 #include <vector>
 #include <sstream>
+#include <assert.h>
 
 using std::unordered_map;
 using std::vector;
 using std::numeric_limits;
 using std::stoi;
+using std::to_string;
 using std::stringstream;
 
 Dijkstra::Dijkstra(AirlineFlow& airlineFlow) : 
         _routeGraph(airlineFlow.getRouteGraph()), _airports(airlineFlow.getAirportDataset()) {};
 
+pair<int, vector<int>> Dijkstra::shortestPath(string sourceIATA, string destIATA) {
+    int source = _airports->getAirportIDByIATA(sourceIATA);
+    int dest = _airports->getAirportIDByIATA(destIATA);
+    assert(source != utils::ERROR_AIRPORT_ID && dest != utils::ERROR_AIRPORT_ID);
+    return shortestPath(source, dest);
+}
+
 pair<int, vector<int>> Dijkstra::shortestPath(int source, int dest) {
+    assert(_routeGraph->vertexExists(to_string(source)));
+    assert(_routeGraph->vertexExists(to_string(dest)));
     unordered_map<int, int> dist;       // a map to correspond each vertex to its dist from source
     unordered_map<int, int> previous;   // maps current vertex -> its previous vetex
     unordered_map<int, bool> visited;
@@ -85,8 +97,16 @@ pair<int, vector<int>> Dijkstra::shortestPath(int source, int dest) {
     return to_return;
 }
 
+string Dijkstra::getShortestPathReport(string sourceIATA, string destIATA) {
+    int source = _airports->getAirportIDByIATA(sourceIATA);
+    int dest = _airports->getAirportIDByIATA(destIATA);
+    assert(source != utils::ERROR_AIRPORT_ID && dest != utils::ERROR_AIRPORT_ID);
+    return getShortestPathReport(source, dest);
+}
+
 string Dijkstra::getShortestPathReport(int source, int dest) {
     stringstream ss;
+    ss << "#-------- Dijkstra Report" << endl;
     ss << "From: " << _airports->getAirportByID(source)->name << endl;
     ss << "To:   " << _airports->getAirportByID(dest)->name << "\nPassing:\n";
     pair<int, vector<int>> res = shortestPath(source, dest);
@@ -95,5 +115,6 @@ string Dijkstra::getShortestPathReport(int source, int dest) {
         ss << idx++ << ".\t" << _airports->getAirportByID(id)->name << endl;
     }
     ss << "The shortest path distance is " << res.first  << " kilometers.\n";
+    ss << "#-------- End Dijkstra Report" << endl;
     return ss.str();
 }

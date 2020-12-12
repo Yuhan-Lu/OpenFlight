@@ -187,6 +187,12 @@ namespace utils {
      */
     vector<string> split(const string &s, char delim);
 
+    /**
+     * Return if the two double are equal
+     * @returns whether the two doubles are equal
+     */
+    bool doubleEqual(double& lft, double& rgt);
+
     /** Error code used when airport ID is not recognizable */
     const static int ERROR_AIRPORT_ID = -pow(2,30);
     const static string STR_ERROR_AIRPORT_ID = to_string(ERROR_AIRPORT_ID);
