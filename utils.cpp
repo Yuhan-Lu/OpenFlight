@@ -1,13 +1,13 @@
 #include "utils.h"
 #include <algorithm>
 #include <iostream>
-#include <random>
 #include <assert.h>
 #include <math.h>
+#include <sstream>
 
 using std::cout;
 using std::stringstream;
-using std::default_random_engine;
+using std::stringstream;
 
 namespace utils {
     vector<string> readEntry(string &s) {
@@ -57,7 +57,6 @@ namespace utils {
 
     Matrix* Matrix::initialVector(int r) {
         long double** arr = new long double*[r];
-        // default_random_engine rng(time(nullptr));
         for (int i = 0; i < r; i++) {
             arr[i] = new long double[1];
             arr[i][0] = powl(r, -1);
@@ -232,5 +231,15 @@ namespace utils {
             }
             cout << endl;
         }
+    }
+
+    vector<string> split(const string &s, char delim) {
+        vector<string> result;
+        stringstream ss(s);
+        string item;
+        while (getline(ss, item, delim)) {
+            result.push_back(item);
+        }
+        return result;
     }
 }

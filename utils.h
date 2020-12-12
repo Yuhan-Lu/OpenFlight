@@ -178,6 +178,13 @@ namespace utils {
      */
     bool operator==(const Matrix& lhs, const Matrix& rhs);
 
+    /** 
+     * Split a string into a vector of strings using specified delimiter
+     * @param s the string needed to be splited
+     * @param delim the delimiter used
+     */
+    vector<string> split(const string &s, char delim);
+
     /** Error code used when airport ID is not recognizable */
     const static int ERROR_AIRPORT_ID = -pow(2,30);
     const static string STR_ERROR_AIRPORT_ID = to_string(ERROR_AIRPORT_ID);
