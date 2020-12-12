@@ -189,12 +189,13 @@ string AirlineFlow::getAirlineBetweenAirportsReport(int sourceAirportID, int des
     ss << "From: " << _airports->getAirportByID(sourceAirportID)->name << endl;
     ss << "To:   " << _airports->getAirportByID(destAirportID)->name << endl;
     if (a.size() != 0) {
-        ss << "There are total " << a.size() << " airlines that operates this path" << endl;
+        ss << "There are total " << a.size() << " airline(s) that operates this path" << endl;
+        int num = 1;
         for (int i : a) {
-            ss << "airline No." << i << ", " << _airlines->getAirlineByID(i)->name << endl;
+            ss << num++ << ".\t" << _airlines->getAirlineByID(i)->name << endl;
         }
     } else {
-        ss << "There is no airlines operate this path" << endl;
+        ss << "There is no airline operate this path" << endl;
     }
     ss << "#-------- End AirlineFlow Report" << endl;
     return ss.str();

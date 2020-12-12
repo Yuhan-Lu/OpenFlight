@@ -104,6 +104,7 @@ PNG* PathDrawer::renderPath() {
 void PathDrawer::renderPath(string fileName) {
     PNG* res = renderPath();
     res->writeToFile(fileName);
+    cout << "Saving to file " << fileName << endl;
 }
 
 
