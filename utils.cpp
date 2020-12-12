@@ -188,7 +188,7 @@ namespace utils {
         return toReturn;
     }
     
-    void Matrix::convertToDampingMatrix(double dampingCoeff) {
+    void Matrix::convertToTransitionMatrix(double dampingCoeff) {
         assert(_nRows == _nCols);
         int n = _nRows;
         long double c = (1 - dampingCoeff) / n;

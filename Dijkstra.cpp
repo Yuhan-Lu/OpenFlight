@@ -2,23 +2,32 @@
 
 #include <algorithm>
 #include <limits>
+#include <unordered_map>
+#include <vector>
+#include <sstream>
 
-using namespace std;
+using std::unordered_map;
+using std::vector;
+using std::numeric_limits;
 using std::stoi;
+using std::stringstream;
 
-vector<string> shortest_path(Graph* G, int source, int dest, bool test) {
-    unordered_map<int, int> dist; // a map to correspond each vertex to its dist from source
-    unordered_map<int, int> previous; // maps current vertex -> its previous vetex
+Dijkstra::Dijkstra(AirlineFlow& airlineFlow) : 
+        _routeGraph(airlineFlow.getRouteGraph()), _airports(airlineFlow.getAirportDataset()) {};
+
+pair<int, vector<int>> Dijkstra::shortestPath(int source, int dest) {
+    unordered_map<int, int> dist;       // a map to correspond each vertex to its dist from source
+    unordered_map<int, int> previous;   // maps current vertex -> its previous vetex
     unordered_map<int, bool> visited;
-    vector<int> pq; // the priority queue
-    vector<int> path; // the vector used to store the airportIDs along the shortest path
-    vector<string> path_s; //the vector used to store the airport names along the shortest path
+    vector<int> pq;         // the priority queue
+    vector<int> path;       // the vector used to store the airportIDs along the shortest path
+    vector<string> path_s;  //the vector used to store the airport names along the shortest path
     int INF = numeric_limits<int>::max();
     auto comparator = [&] (int first, int sec) { return dist[first] > dist[sec]; };
 
-    //make_heap(pq.begin(), pq.end(), comparator);
+    // make_heap(pq.begin(), pq.end(), comparator);
     // loop through all the vertices to initialize pq and dist
-    for (auto & vertex : G->getVertices()) {
+    for (auto & vertex : _routeGraph->getVertices()) {
         int v = stoi(vertex);
         if (v == source) {
             dist[v] = 0;
@@ -52,9 +61,9 @@ vector<string> shortest_path(Graph* G, int source, int dest, bool test) {
         }
 
         //loop through all the neighbours of the current min
-        for (auto & neighbour : G->getAdjacent(m)) {
-            int cost = G->getEdgeWeight(m, neighbour);
-            if (!visited[stoi(neighbour)] && G->edgeExists(m, neighbour)
+        for (auto & neighbour : _routeGraph->getAdjacent(m)) {
+            int cost = _routeGraph->getEdgeWeight(m, neighbour);
+            if (!visited[stoi(neighbour)] && _routeGraph->edgeExists(m, neighbour)
                  && dist[min] + cost < dist[stoi(neighbour)]) {
                 //update neighbour's distances
                 dist[stoi(neighbour)] = dist[min] + cost;
@@ -62,23 +71,29 @@ vector<string> shortest_path(Graph* G, int source, int dest, bool test) {
                 make_heap(pq.begin(), pq.end(), comparator);
             }
         }
-
-
-
     }
 
-    
     //reverse path to get the correct direction
     reverse(path.begin(), path.end());
 
-    Airports* airports = new Airports(test);
-    for (int i : path) {
-        Airports::AirportNode* node = airports->getAirportByID(i);
-        path_s.push_back(node->name);
+    pair<int, vector<int>> to_return;
+    to_return.second.push_back(source);
+    for (int id : path) {
+        to_return.second.push_back(id);
     }
+    to_return.first = dist[dest];
+    return to_return;
+}
 
-    delete airports;
-    cout << "The shortest path distance is " << dist[dest]  << " kilometers."<< endl;
-    return path_s;
-
+string Dijkstra::getShortestPathReport(int source, int dest) {
+    stringstream ss;
+    ss << "From: " << _airports->getAirportByID(source)->name << endl;
+    ss << "To:   " << _airports->getAirportByID(dest)->name << "\nPassing:\n";
+    pair<int, vector<int>> res = shortestPath(source, dest);
+    int idx = 1;
+    for (int id : res.second) {
+        ss << idx++ << ".\t" << _airports->getAirportByID(id)->name << endl;
+    }
+    ss << "The shortest path distance is " << res.first  << " kilometers.\n";
+    return ss.str();
 }

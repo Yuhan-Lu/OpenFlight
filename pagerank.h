@@ -5,12 +5,13 @@
 #include "routes.h"
 #include "cs225/graph.h"
 #include "utils.h"
+#include "airlineFlow.h"
 #include <unordered_map>
 
 using utils::Matrix;
 
 /**
- * Pagerank class, use the method by Markov Chain
+ * Pagerank class, use the method of Markov Chain
  */
 class Pagerank {
     public:
@@ -29,6 +30,16 @@ class Pagerank {
             return _graphMat;
         }
 
+        /**
+         * Do pagerank and return a ranked list, ordered in decreasing popular order, the return 
+         * vector contains pairs which first entry is the airportID, and second entry the airport
+         * name
+         * @param _airlineFlow airlineflow pointer to get airport
+         * @param alpha used in inital transition matrix generation
+         * @returns vector specified above
+         */
+        vector<pair<int, string>> pagerankOperation(AirlineFlow* _airlineFlow, double alpha);
+        
     private:
         /**
          * Load the matrix with edge label (number of airlines that fly in this route) as the weight
@@ -42,6 +53,8 @@ class Pagerank {
 
         /** Graph used when generating matrix */
         const Graph* _graph;
+
+        //AirlineFlow _airlineFlow;
 
         /** Generated matrix */
         Matrix* _graphMat;

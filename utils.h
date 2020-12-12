@@ -98,18 +98,20 @@ namespace utils {
             Matrix* normalize();
 
             /**
-             * Convert the matrix to a dmaped matrix using coefficient
+             * Convert the matrix to transition matrix using damping coefficient
              * @param dampingCoeff damping coefficent
              */
-            void convertToDampingMatrix(double dampingCoeff);
+            void convertToTransitionMatrix(double dampingCoeff);
 
             /**
-             * 
+             * Convert the matrix into a vector. Notice this only applies to matrices with either one 
+             * column or one row. Otherwise this will throw an exception.
+             * @returns transformed vector
              */
             vector<long double> toVector();
             
             /** 
-             * Prints the matrix
+             * Print the matrix
              */
             void printMatrix();
 
@@ -188,6 +190,5 @@ namespace utils {
     /** Error code used when airport ID is not recognizable */
     const static int ERROR_AIRPORT_ID = -pow(2,30);
     const static string STR_ERROR_AIRPORT_ID = to_string(ERROR_AIRPORT_ID);
-
-    const static long double TOL = powl(10, -32);
+    const static long double TOL = powl(10, -15);
 }

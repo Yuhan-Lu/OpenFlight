@@ -7,17 +7,17 @@ using std::pair;
 using std::string;
 using std::unordered_map;
 using std::stoi;
+using std::to_string;
 using utils::split;
 
-PathDrawer::PathDrawer(Airports* _airports) : _canvas(new PNG()) {
+PathDrawer::PathDrawer(Airports* airports) : _canvas(new PNG()) {
     _canvas->readFromFile("data/map-2048.png");
     _center = pair<int, int>((int) _canvas->width() / 2, (int) _canvas->height() / 2);
     _pixelPerDegree = pair<double, double>(_canvas->width() / 360.0, _canvas->height() / 180.0);
-    this->_airports = _airports;
+    this->_airports = airports;
 }
 
-
-void PathDrawer::addPath(vector<Vertex> list, const HSLAPixel& renderPixel = HSLAPixel(240, 1, 0.5, 1)) {
+void PathDrawer::addPath(vector<Vertex> list, const HSLAPixel& renderPixel) {
     assert(list.size() >= 2);
     Vertex from = list[0];
     for (size_t i = 1; i < list.size(); i++) {
@@ -27,10 +27,58 @@ void PathDrawer::addPath(vector<Vertex> list, const HSLAPixel& renderPixel = HSL
     }
 }
 
-void PathDrawer::addPath(Vertex from, Vertex to, const HSLAPixel& renderPixel = HSLAPixel(240, 1, 0.5, 1)) {
+void PathDrawer::addPath(vector<int> list, const HSLAPixel& renderPixel) {
+    assert(list.size() >= 2);
+    Vertex from = to_string(list[0]);
+    for (size_t i = 1; i < list.size(); i++) {
+        Vertex to = to_string(list[i]);
+        addPath(from, to, renderPixel);
+        from = to;
+    }
+}
+
+void PathDrawer::addPath(Vertex from, Vertex to, const HSLAPixel& renderPixel) {
     string key = from + "_" + to;
     _pathList[key] = renderPixel;
 }
+
+void PathDrawer::addPath(int from, int to, const HSLAPixel& renderPixel) {
+    string key = to_string(from) + "_" + to_string(to);
+    _pathList[key] = renderPixel;
+}
+
+void PathDrawer::removePath(vector<Vertex> list) {
+    assert(list.size() >= 2);
+    Vertex from = list[0];
+    for (size_t i = 1; i < list.size(); i++) {
+        Vertex to = list[i];
+        removePath(from, to);
+        from = to;
+    }
+}
+
+void PathDrawer::removePath(vector<int> list) {
+    assert(list.size() >= 2);
+    Vertex from = to_string(list[0]);
+    for (size_t i = 1; i < list.size(); i++) {
+        Vertex to = to_string(list[i]);
+        removePath(from, to);
+        from = to;
+    }
+}
+
+void PathDrawer::removePath(Vertex from, Vertex to) {
+    string key = from + "_" + to;
+    if (_pathList.count(key))
+        _pathList.erase(key);
+}
+
+void PathDrawer::removePath(int from, int to) {
+    string key = to_string(from) + "_" + to_string(to);
+    if (_pathList.count(key))
+        _pathList.erase(key);
+}
+
 
 PNG* PathDrawer::renderPath() {
     PNG* res = new PNG(*_canvas);
@@ -53,11 +101,16 @@ PNG* PathDrawer::renderPath() {
     return res;
 }
 
+void PathDrawer::renderPath(string fileName) {
+    PNG* res = renderPath();
+    res->writeToFile(fileName);
+}
 
-PNG* PathDrawer::_drawLine(PNG* canvas, int x1, int y1, int x2, int y2, HSLAPixel& renderPixel) {
+
+void PathDrawer::_drawLine(PNG* canvas, int x1, int y1, int x2, int y2, HSLAPixel& renderPixel) {
     if (x1 == x2) {
         if (y1 == y2) 
-            return canvas;
+            return;
         if (y1 > y2) 
             std::swap(y1, y2);
         int x = x1;
@@ -73,7 +126,7 @@ PNG* PathDrawer::_drawLine(PNG* canvas, int x1, int y1, int x2, int y2, HSLAPixe
             pu = renderPixel;
             pd = renderPixel;
         }
-        return canvas;
+        return;
     }
     if (x1 > x2) {
         std::swap(x1, x2);
@@ -93,5 +146,5 @@ PNG* PathDrawer::_drawLine(PNG* canvas, int x1, int y1, int x2, int y2, HSLAPixe
             pu = renderPixel;
             pd = renderPixel;
     }
-    return canvas;
+    return;
 }

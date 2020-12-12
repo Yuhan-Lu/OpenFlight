@@ -7,10 +7,10 @@
 #include "../utils.h"
 #include "../pagerank.h"
 #include "../airlineFlow.h"
-#include "../Dijkstra.h"
 #include <iostream>
 #include <map>
 #include <vector>
+#include <numeric>
 
 using namespace std;
 using namespace utils;
@@ -278,7 +278,6 @@ TEST_CASE("norm", "norm") {
   vec[9][0] = 0.12911381149527456635439648380270;
   
   Matrix* mat = new Matrix(10, 1, vec);
-  printf("%.32Lf", mat->norm());
   REQUIRE(longDoubleEqual(mat->norm(), 1.96503367736313849789553387381602L));
   
   delete mat;
@@ -331,42 +330,12 @@ TEST_CASE("normalize", "norm") {
   delete normalized;
 }
 
-TEST_CASE("initializeVector", "norm") {
+TEST_CASE("initializeVector", "initialize") {
   Matrix* mat = Matrix::initialVector(10);
-  REQUIRE(longDoubleEqual(mat->norm(), 1));
+  vector<long double> v = mat->toVector();
+  long double n = 0;
+  for (auto it = v.begin(); it != v.end(); ++it)
+    n += *it;
+  REQUIRE(longDoubleEqual(n, 1));
   delete mat;
-}
-
-
-//see testRoutesIMG.jpg
-TEST_CASE("check shortest path on test routes", "[valgrind][weight=1]") {
-  AirlineFlow airlineFlow(true);
-  vector<string> res2 = shortest_path(airlineFlow.getRouteGraph(), 2965, 2922, true);
-  REQUIRE(res2.size() == 4);
-  REQUIRE(res2[0] == "Kazan International Airport");
-  REQUIRE(res2[1] == "Koltsovo Airport");
-  REQUIRE(res2[2] == "Begishevo Airport");
-  REQUIRE(res2[3] == "Heydar Aliyev International Airport");
-}
-
-TEST_CASE("check shortest path on actual routes - CMI to ORD", "[valgrind][weight=1]") {
-  AirlineFlow airlineFlow(false);
-  vector<string> res2 = shortest_path(airlineFlow.getRouteGraph(), 4049, 3830, false);
-  REQUIRE(res2.size() == 1);
-  REQUIRE(res2[0] == "Chicago O'Hare International Airport");
-}
-
-TEST_CASE("check shortest path on actual routes - CAN to HKG", "[valgrind][weight=1]") {
-  AirlineFlow airlineFlow(false);
-  vector<string> res2 = shortest_path(airlineFlow.getRouteGraph(), 3370, 3077, false);
-  REQUIRE(res2.size() == 1);
-  REQUIRE(res2[0] == "Hong Kong International Airport");
-}
-
-TEST_CASE("check shortest path on actual routes - CAN to ORD", "[valgrind][weight=1]") {
-  AirlineFlow airlineFlow(false);
-  vector<string> res2 = shortest_path(airlineFlow.getRouteGraph(), 3370, 3830, false);
-  REQUIRE(res2.size() == 2);
-  REQUIRE(res2[0] == "Beijing Capital International Airport");
-  REQUIRE(res2[1] == "Chicago O'Hare International Airport");
 }
